@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .modelos import Usuario, TipoCuenta, Cuenta, Transaccion, DetalleTransaccion
+from .models import Usuario, TipoCuenta, Cuenta, Transaccion, DetalleTransaccion
 
 @admin.register(Usuario)
 class UsuarioAdmin(admin.ModelAdmin):
