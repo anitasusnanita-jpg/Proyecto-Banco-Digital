@@ -1,8 +1,3 @@
-
-
-# 📄 `README.md` (con Sprints)
-
-```markdown
 # 🏦 Banco Digital - Django 5 Application
 
 Sistema bancario completo desarrollado con Django 5 y SQLite que permite gestión de cuentas, transferencias y dashboard financiero con relaciones de base de datos 1:N y N:M.
