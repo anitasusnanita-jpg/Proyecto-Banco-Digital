@@ -38,6 +38,7 @@ class UsuarioAdmin(admin.ModelAdmin):
 class TipoCuentaAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'tasa_interes', 'cuota_mensual', 'descripcion_corta')
     search_fields = ('nombre', 'descripcion')
+    readonly_fields = ('id',)
     
     fieldsets = (
         ('Información del Tipo de Cuenta', {
