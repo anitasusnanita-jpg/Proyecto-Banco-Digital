@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Banco Digital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+        nav {
+            background-color: #1a3c34;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: white;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .contenedor {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button, .boton {
+            background-color: #1a3c34;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0d2822;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #1a3c34;
+            color: white;
+        }
+        .tarjeta {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .mensajes {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .exito {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .credencial {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid white;
+            object-fit: cover;
+        }
+        .avatar-pequeno {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        .cuadricula {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .paginacion {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .paginacion a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #1a3c34;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+        input, select {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div style="max-width: 1200px; margin: auto;">
+            <strong>🏦 Banco Digital</strong>
+            <a href="{% url 'inicio' %}">Inicio</a>
+            
+            {% if user.is_authenticated %}
+                <a href="{% url 'panel' %}">Mi Panel</a>
+                <a href="{% url 'transferencia' %}">Transferir</a>
+                <a href="{% url 'editar_perfil' %}">Mi Perfil</a>
+                <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
+                <span style="float: right;">
+                    {% if user.foto_perfil %}
+                        <img src="{{ user.foto_perfil.url }}" class="avatar-pequeno">
+                    {% else %}
+                        👤
+                    {% endif %}
+                    <strong>{{ user.username }}</strong>
+                </span>
+            {% else %}
+                <a href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a>
+                <a href="{% url 'registro' %}">Registrarse</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <div class="contenedor">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mensajes {% if message.tags == 'error' %}error{% else %}exito{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

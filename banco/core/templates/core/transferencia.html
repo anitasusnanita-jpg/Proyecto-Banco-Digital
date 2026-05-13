@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Realizar Transferencia</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <div style="margin-bottom: 15px;">
+        <label>Cuenta de Origen:</label><br>
+        <select name="cuenta_origen" required style="width: 300px;">
+            <option value="">Selecciona una cuenta</option>
+            {% for cuenta in cuentas %}
+                <option value="{{ cuenta.id }}">
+                    {{ cuenta.numero_cuenta }} - Saldo: ${{ cuenta.saldo }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label>Cuenta Destino (número):</label><br>
+        <input type="text" name="cuenta_destino" required style="width: 300px;">
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label>Monto:</label><br>
+        <input type="number" name="monto" step="0.01" required style="width: 300px;">
+    </div>
+    
+    <button type="submit">Transferir</button>
+</form>
+
+<div style="margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px;">
+    <strong>Información:</strong>
+    <ul>
+        <li>Las transferencias son inmediatas</li>
+        <li>Debes tener saldo suficiente</li>
+        <li>Monto mínimo: $1.00</li>
+    </ul>
+</div>
+{% endblock %}

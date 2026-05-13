@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>💰 Cuentas Bancarias Disponibles</h2>
+
+<form method="GET" style="margin-bottom: 20px; padding: 15px; background: #f0f0f0;">
+    <input type="text" name="q" placeholder="Buscar por número o titular" style="width: 250px;">
+    <select name="tipo_cuenta">
+        <option value="">Todos los tipos</option>
+        {% for tipo in tipos_cuenta %}
+            <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Buscar</button>
+</form>
+
+<div class="cuadricula">
+    {% for cuenta in pagina_objetos %}
+        <div class="tarjeta">
+            <h3>Cuenta: {{ cuenta.numero_cuenta }}</h3>
+            <p><strong>Saldo:</strong> ${{ cuenta.saldo }}</p>
+            <p><strong>Titular:</strong> {{ cuenta.propietario.username }}</p>
+            <p><strong>Tipo(s):</strong> 
+                {% for tipo in cuenta.tipos_cuenta.all %}
+                    [{{ tipo.nombre }}]
+                {% endfor %}
+            </p>
+            <p><strong>Estado:</strong> 
+                {% if cuenta.estado == 'activa' %}✅ Activa{% else %}❌ Bloqueada{% endif %}
+            </p>
+        </div>
+    {% empty %}
+        <p>No hay cuentas disponibles.</p>
+    {% endfor %}
+</div>
+
+<div class="paginacion">
+    {% if pagina_objetos.has_previous %}
+        <a href="?page={{ pagina_objetos.previous_page_number }}">◀ Anterior</a>
+    {% endif %}
+    
+    <span>Página {{ pagina_objetos.number }} de {{ pagina_objetos.paginator.num_pages }}</span>
+    
+    {% if pagina_objetos.has_next %}
+        <a href="?page={{ pagina_objetos.next_page_number }}">Siguiente ▶</a>
+    {% endif %}
+</div>
+{% endblock %}

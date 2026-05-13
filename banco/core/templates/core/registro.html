@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Registro de Cliente - Credencial Bancaria</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {% for campo in formulario %}
+        <div style="margin-bottom: 15px;">
+            <label>{{ campo.label }}:</label><br>
+            {{ campo }}
+            {% if campo.errors %}
+                <div style="color: red; font-size: 12px;">{{ campo.errors }}</div>
+            {% endif %}
+            {% if campo.help_text %}
+                <small style="color: gray;">{{ campo.help_text }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+    <button type="submit">Registrarse</button>
+</form>
+
+<p style="margin-top: 15px;">¿Ya tienes cuenta? <a href="{% url 'iniciar_sesion' %}">Inicia sesión aquí</a></p>
+{% endblock %}

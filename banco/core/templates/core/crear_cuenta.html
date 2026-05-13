@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Abrir Nueva Cuenta Bancaria</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ formulario.as_p }}
+    <button type="submit">Crear Cuenta</button>
+    <a href="{% url 'panel' %}" class="boton" style="background: #6c757d;">Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>📊 Mi Panel Bancario</h2>
+    <a href="{% url 'crear_cuenta' %}" class="boton">+ Nueva Cuenta</a>
+</div>
+
+<div class="credencial">
+    {% if user.foto_perfil %}
+        <img src="{{ user.foto_perfil.url }}" class="avatar">
+    {% else %}
+        <div style="width: 100px; height: 100px; background: #ddd; border-radius: 50%; 
+                    display: flex; align-items: center; justify-content: center; font-size: 48px;">
+            👤
+        </div>
+    {% endif %}
+    
+    <div>
+        <h3>{{ user.username }}</h3>
+        <p>📧 {{ user.email }}</p>
+        <p>📞 {{ user.telefono|default:"No registrado" }}</p>
+        <p>🆔 ID: {{ user.id|slice:"-8" }}</p>
+        <p>🏦 Cliente desde: {{ user.date_joined|date:"d/m/Y" }}</p>
+    </div>
+</div>
+
+<div style="display: flex; gap: 15px; margin: 20px 0;">
+    <div style="background: #007bff; color: white; padding: 15px; flex: 1; border-radius: 8px;">
+        <h3>Saldo Total</h3>
+        <p style="font-size: 24px;">${{ saldo_total }}</p>
+    </div>
+    <div style="background: #17a2b8; color: white; padding: 15px; flex: 1; border-radius: 8px;">
+        <h3>Cuentas Activas</h3>
+        <p style="font-size: 24px;">{{ cuentas|length }}</p>
+    </div>
+</div>
+
+<h3>Mis Cuentas</h3>
+<table>
+    <thead>
+        <tr><th>Número</th><th>Tipos</th><th>Saldo</th><th>Estado</th></tr>
+    </thead>
+    <tbody>
+        {% for cuenta in cuentas %}
+        <tr>
+            <td>{{ cuenta.numero_cuenta }}</td>
+            <td>{% for tipo in cuenta.tipos_cuenta.all %}{{ tipo.nombre }} {% endfor %}</td>
+            <td>${{ cuenta.saldo }}</td>
+            <td>{% if cuenta.estado == 'activa' %}Activa{% else %}Bloqueada{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 style="margin-top: 30px;">📜 Últimos Movimientos</h3>
+{% if transacciones_recientes %}
+<table>
+    <thead><tr><th>Fecha</th><th>Tipo</th><th>Descripción</th></tr></thead>
+    <tbody>
+        {% for transaccion in transacciones_recientes %}
+        <tr>
+            <td>{{ transaccion.fecha|date:"d/m/Y H:i" }}</td>
+            <td>{{ transaccion.get_tipo_transaccion_display }}</td>
+            <td>{{ transaccion.descripcion }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No hay movimientos recientes.</p>
+{% endif %}
+{% endblock %}

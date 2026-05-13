@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Iniciar Sesión</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div style="margin-bottom: 10px;">
+        <label>Usuario:</label><br>
+        <input type="text" name="username" required style="width: 300px;">
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label>Contraseña:</label><br>
+        <input type="password" name="password" required style="width: 300px;">
+    </div>
+    <button type="submit">Ingresar</button>
+</form>
+
+<p style="margin-top: 15px;">¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
+{% endblock %}
