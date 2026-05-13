@@ -1,0 +1,1 @@
+documentacion completa del banco digital con estructura de sprints incluye objetivo por sprint modelos con relaciones uno a muchos y muchos a muchos configuracion autenticacion dashboard transferencias optimizacion instrucciones de instalacion flujo de prueba y diagrama de relaciones
