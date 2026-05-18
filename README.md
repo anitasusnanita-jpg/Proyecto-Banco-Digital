@@ -1,6 +1,5 @@
-# 🏦 Banco Digital - Django 5 Application
-
-Sistema bancario completo desarrollado con Django 5 y SQLite que permite gestión de cuentas, transferencias, recarga de saldo y dashboard financiero.
+# 🏦 Banco Digital - Django 
+Sistema bancario completo desarrollado con Django y SQLite que permite gestión de cuentas, transferencias, recarga de saldo y dashboard financiero.
 
 ---
 
