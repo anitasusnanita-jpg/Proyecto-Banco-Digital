@@ -268,11 +268,4 @@ python manage.py runserver
 | 5 | Optimización + Recarga | 2 | editar_perfil, recargar |
 | **Total** | | **9** | **Sistema completo** |
 
-
-## 📝 Guardar cambios:
-
-```bash
-git add README.md
-git commit -m "readme actualizado con lista completa de 9 templates y detalle de cada sprint"
-git push
-```
+---------------------------------------------------------------------------
