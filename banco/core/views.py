@@ -157,3 +157,33 @@ def editar_perfil(request):
         formulario = FormularioActualizarUsuario(instance=request.user)
     
     return render(request, 'core/editar_perfil.html', {'formulario': formulario})
+
+@login_required
+def recargar_saldo(request, cuenta_id):
+    cuenta = get_object_or_404(Cuenta, id=cuenta_id, propietario=request.user)
+    
+    if request.method == 'POST':
+        monto = Decimal(request.POST.get('monto'))
+        
+        if monto <= 0:
+            messages.error(request, 'El monto debe ser mayor a cero')
+        else:
+            transaccion = Transaccion.objects.create(
+                usuario=request.user,
+                tipo_transaccion='deposito',
+                descripcion=f"Recarga a cuenta {cuenta.numero_cuenta}"
+            )
+            
+            DetalleTransaccion.objects.create(
+                transaccion=transaccion,
+                cuenta=cuenta,
+                monto=monto
+            )
+            
+            cuenta.saldo += monto
+            cuenta.save()
+            
+            messages.success(request, f'¡Recarga exitosa! Se añadieron ${monto} a tu cuenta {cuenta.numero_cuenta}')
+            return redirect('panel')
+    
+    return render(request, 'core/recargar.html', {'cuenta': cuenta})

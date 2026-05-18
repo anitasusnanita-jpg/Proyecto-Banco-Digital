@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>💰 Recargar Saldo</h2>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+    <h3>Cuenta: {{ cuenta.numero_cuenta }}</h3>
+    <p style="font-size: 24px;">Saldo actual: ${{ cuenta.saldo }}</p>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <div style="margin-bottom: 15px;">
+        <label>Monto a recargar:</label><br>
+        <input type="number" name="monto" step="0.01" min="1" required 
+               style="width: 300px; padding: 10px; font-size: 16px;">
+        <small style="color: gray;">Monto mínimo: $1.00</small>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <button type="submit" style="background-color: #28a745; padding: 10px 20px; font-size: 16px;">
+            💰 Recargar Saldo
+        </button>
+        <a href="{% url 'panel' %}" class="boton" style="background: #6c757d;">Cancelar</a>
+    </div>
+</form>
+
+<div style="margin-top: 20px; padding: 15px; background: #e8f4e8; border-radius: 8px;">
+    <strong>💡 Tips de recarga:</strong>
+    <ul>
+        <li>Puedes recargar desde $1.00 hasta $100,000.00</li>
+        <li>La recarga es inmediata</li>
+        <li>Sin comisiones ni costos ocultos</li>
+    </ul>
+</div>
+{% endblock %}

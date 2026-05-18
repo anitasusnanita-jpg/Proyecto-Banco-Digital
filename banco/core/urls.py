@@ -10,4 +10,5 @@ urlpatterns = [
     path('cuenta/crear/', views.crear_cuenta, name='crear_cuenta'),
     path('transferencia/', views.realizar_transferencia, name='transferencia'),
     path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
+    path('recargar/<uuid:cuenta_id>/', views.recargar_saldo, name='recargar'),
 ]

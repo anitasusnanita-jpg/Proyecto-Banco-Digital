@@ -30,7 +30,7 @@ class UsuarioAdmin(admin.ModelAdmin):
     fecha_registro.short_description = 'Fecha de Registro'
     
     def activo(self, obj):
-        return 'Sí' if obj.is_active else 'No'
+        return obj.is_active
     activo.short_description = 'Activo'
     activo.boolean = True
 
@@ -124,7 +124,7 @@ class TransaccionAdmin(admin.ModelAdmin):
     list_display = ('id_corto', 'tipo_transaccion', 'cliente', 'fecha', 'monto_total')
     list_filter = ('tipo_transaccion', 'fecha', 'usuario')
     search_fields = ('usuario__username', 'usuario__email', 'descripcion')
-    readonly_fields = ('id', 'fecha', 'usuario')
+    readonly_fields = ('id', 'fecha')
     inlines = [DetalleTransaccionInline]
     
     fieldsets = (

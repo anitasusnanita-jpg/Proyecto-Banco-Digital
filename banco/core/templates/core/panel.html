@@ -39,7 +39,7 @@
 <h3>Mis Cuentas</h3>
 <table>
     <thead>
-        <tr><th>Número</th><th>Tipos</th><th>Saldo</th><th>Estado</th></tr>
+        <tr><th>Número</th><th>Tipos</th><th>Saldo</th><th>Estado</th><th>Acciones</th></tr>
     </thead>
     <tbody>
         {% for cuenta in cuentas %}
@@ -48,6 +48,13 @@
             <td>{% for tipo in cuenta.tipos_cuenta.all %}{{ tipo.nombre }} {% endfor %}</td>
             <td>${{ cuenta.saldo }}</td>
             <td>{% if cuenta.estado == 'activa' %}Activa{% else %}Bloqueada{% endif %}</td>
+            <td>
+                <a href="{% url 'recargar' cuenta.id %}" 
+                   style="background-color: #28a745; color: white; padding: 5px 10px; 
+                          text-decoration: none; border-radius: 5px; display: inline-block;">
+                   💰 Recargar
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
