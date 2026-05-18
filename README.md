@@ -1,148 +1,117 @@
 # 🏦 Banco Digital - Django 5 Application
 
-Sistema bancario completo desarrollado con Django 5 y SQLite que permite gestión de cuentas, transferencias y dashboard financiero con relaciones de base de datos 1:N y N:M.
+Sistema bancario completo desarrollado con Django 5 y SQLite que permite gestión de cuentas, transferencias, recarga de saldo y dashboard financiero.
 
 ---
 
 ## 🚀 SPRINT 1 — Setup + Modelado Base
 
 ### 🎯 Objetivo
-
-Tener:
 - Proyecto Django funcionando
 - App core (banco)
-- Modelos con relaciones:
-  - 1:N → Usuario → Cuenta
-  - N:M → Cuenta ↔ TipoCuenta
-  - N:M → Transacción ↔ Cuenta (con tabla intermedia)
+- Modelos con relaciones 1:N y N:M
 - Admin operativo
 
-### 1. Crear proyecto en django
+### 📁 Estructura inicial
 ```bash
 django-admin startproject banco
 cd banco
 python manage.py startapp core
 ```
 
-### 2. Configurar settings.py
-```python
-INSTALLED_APPS = [
-    ...
-    'core',
-]
+### 🗄️ Modelos creados
+- `Usuario` (con foto_perfil, teléfono, dirección)
+- `TipoCuenta` (nombre, tasa_interés, cuota_mensual)
+- `Cuenta` (numero_cuenta, saldo, estado)
+- `Transaccion` (tipo, descripción, fecha)
+- `DetalleTransaccion` (monto, tabla intermedia)
 
-AUTH_USER_MODEL = 'core.Usuario'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-```
+### Relaciones implementadas
+| Relación | Tipo |
+|----------|------|
+| Usuario → Cuenta | 1:N |
+| Cuenta ↔ TipoCuenta | N:M |
+| Transacción ↔ Cuenta | N:M (vía DetalleTransaccion) |
 
-### 3. MODELOS (CLAVE DEL PROYECTO)
-
-**core/modelos.py:**
-```python
-import uuid
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-
-class Usuario(AbstractUser):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    telefono = models.CharField(max_length=15, blank=True)
-    direccion = models.TextField(blank=True)
-    foto_perfil = models.ImageField(upload_to='fotos_perfil/', blank=True, null=True)
-
-class TipoCuenta(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100)
-    tasa_interes = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    cuota_mensual = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-
-class Cuenta(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    numero_cuenta = models.CharField(max_length=20, unique=True)
-    saldo = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    estado = models.CharField(max_length=10, default='activa')
-    
-    propietario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='cuentas')  # 1:N
-    tipos_cuenta = models.ManyToManyField(TipoCuenta, related_name='cuentas')  # N:M
-
-class Transaccion(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    tipo_transaccion = models.CharField(max_length=20)
-    fecha = models.DateTimeField(auto_now_add=True)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    cuentas = models.ManyToManyField(Cuenta, through='DetalleTransaccion')  # N:M
-
-class DetalleTransaccion(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    transaccion = models.ForeignKey(Transaccion, on_delete=models.CASCADE)
-    cuenta = models.ForeignKey(Cuenta, on_delete=models.CASCADE)
-    monto = models.DecimalField(max_digits=12, decimal_places=2)
-```
-
-### 4. Admin de django (en español)
-- Panel administrativo completamente traducido
-- Campos personalizados: teléfono, fecha registro, saldo, estado
-- Filtros y búsqueda por todos los campos
-
-### 5. Migraciones
-```bash
-python manage.py makemigrations
-python manage.py migrate
-python manage.py createsuperuser
-```
+### ✅ Sprint 1 entregables
+- [x] Proyecto Django creado
+- [x] App core registrada
+- [x] Modelos con relaciones 1:N y N:M
+- [x] UUID como primary key
+- [x] Panel admin configurado
+- [x] Migraciones aplicadas
 
 ---
 
 ## 🚀 SPRINT 2 — Autenticación + UI Base
 
 ### 🎯 Objetivo
-- Registro, login, logout
+- Sistema de registro y login
 - Layout base con CSS puro
 - Navbar dinámica
-- Listado de cuentas
 - Home pública
 
-### URLs principales
+### URLs de autenticación
 ```python
 urlpatterns = [
-    path('', vistas.inicio, name='inicio'),
-    path('registro/', vistas.registro, name='registro'),
-    path('iniciar-sesion/', vistas.iniciar_sesion, name='iniciar_sesion'),
-    path('cerrar-sesion/', vistas.cerrar_sesion, name='cerrar_sesion'),
+    path('', views.inicio, name='inicio'),
+    path('registro/', views.registro, name='registro'),
+    path('iniciar-sesion/', views.iniciar_sesion, name='iniciar_sesion'),
+    path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
 ]
 ```
 
-### Formularios
-- FormularioRegistro con email, teléfono y foto de perfil
-- Bootstrap reemplazado por CSS personalizado
+### Templates creados en este sprint
 
-### Templates
-- base.html (nav, footer, estilos)
-- inicio.html (listado de cuentas)
-- registro.html
-- iniciar_sesion.html
+| # | Template | Función |
+|---|----------|---------|
+| 1 | `base.html` | Plantilla principal con navegación y estilos CSS |
+| 2 | `inicio.html` | Listado de cuentas públicas con búsqueda y filtros |
+| 3 | `registro.html` | Formulario de registro con foto de perfil |
+| 4 | `iniciar_sesion.html` | Formulario de inicio de sesión |
+
+### ✅ Sprint 2 entregables
+- [x] Registro de usuarios con foto
+- [x] Login/logout funcional
+- [x] Navbar dinámica
+- [x] CSS personalizado
+- [x] Mensajes flash de éxito/error
+- [x] 4 templates creados
 
 ---
 
 ## 🚀 SPRINT 3 — Gestión de Cuentas + Dashboard
 
 ### 🎯 Objetivo
-- CRUD completo de cuentas
-- Dashboard para clientes
-- Control de permisos (solo dueño)
-- UI tipo panel bancario
+- CRUD de cuentas bancarias
+- Dashboard personal para clientes
+- Control de permisos
 
 ### URLs agregadas
 ```python
-path('panel/', vistas.panel, name='panel'),
-path('cuenta/crear/', vistas.crear_cuenta, name='crear_cuenta'),
+path('panel/', views.panel, name='panel'),
+path('cuenta/crear/', views.crear_cuenta, name='crear_cuenta'),
 ```
+
+### Templates creados en este sprint
+
+| # | Template | Función |
+|---|----------|---------|
+| 5 | `panel.html` | Dashboard con saldo total, cuentas y movimientos |
+| 6 | `crear_cuenta.html` | Formulario para abrir nueva cuenta |
 
 ### Dashboard features
 - Credencial bancaria con foto de perfil
 - Saldo total de todas las cuentas
 - Listado de cuentas del usuario
 - Últimos movimientos recientes
+
+### ✅ Sprint 3 entregables
+- [x] Dashboard con resumen financiero
+- [x] Crear nuevas cuentas
+- [x] Listado de cuentas del usuario
+- [x] Control de permisos
+- [x] 2 nuevos templates (total: 6)
 
 ---
 
@@ -152,74 +121,109 @@ path('cuenta/crear/', vistas.crear_cuenta, name='crear_cuenta'),
 - Sistema de transferencias entre cuentas
 - Validación de saldo suficiente
 - Registro de transacciones
-- Actualización atómica de saldos
 
-### URLs agregadas
+### URL agregada
 ```python
-path('transferencia/', vistas.realizar_transferencia, name='transferencia'),
+path('transferencia/', views.realizar_transferencia, name='transferencia'),
 ```
 
+### Template creado en este sprint
+
+| # | Template | Función |
+|---|----------|---------|
+| 7 | `transferencia.html` | Formulario para transferir dinero entre cuentas |
+
 ### Lógica de transferencia
-```python
-# Validaciones
 - Monto mayor a cero
 - Saldo suficiente
 - Cuenta destino existe
 - No transferir a misma cuenta
-
-# Actualizaciones
 - Restar saldo a cuenta origen
 - Sumar saldo a cuenta destino
-- Registrar transacción con detalles
-```
+
+### ✅ Sprint 4 entregables
+- [x] Transferencias entre cuentas
+- [x] Validación de saldo insuficiente
+- [x] Registro automático de transacciones
+- [x] 1 nuevo template (total: 7)
 
 ---
 
-## 🚀 SPRINT 5 — Optimización + UX
+## 🚀 SPRINT 5 — Optimización + UX + Recarga + Edición
 
 ### 🎯 Objetivo
-- Búsqueda de cuentas
-- Filtros por tipo de cuenta
+- Búsqueda y filtros
 - Paginación
-- Mensajes dinámicos
-- Optimización ORM
-- Edición de perfil con foto
+- Edición de perfil
+- Recarga de saldo desde página web
+
+### URLs agregadas
+```python
+path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
+path('recargar/<uuid:cuenta_id>/', views.recargar_saldo, name='recargar'),
+```
+
+### Templates creados en este sprint
+
+| # | Template | Función |
+|---|----------|---------|
+| 8 | `editar_perfil.html` | Formulario para actualizar datos personales y foto |
+| 9 | `recargar.html` | Formulario para recargar saldo a una cuenta |
 
 ### Mejoras implementadas
 ```python
 # Búsqueda con Q
 cuentas.filter(Q(numero_cuenta__icontains=query) | Q(propietario__username__icontains=query))
 
-# Filtros
+# Filtros por tipo de cuenta
 cuentas.filter(tipos_cuenta__id=tipo_cuenta_id)
 
-# Paginación
+# Paginación (6 cuentas por página)
 Paginator(cuentas, 6)
 
-# Optimización
+# Optimización ORM
 select_related('propietario').prefetch_related('tipos_cuenta')
 ```
 
-### URLs agregadas
-```python
-path('perfil/editar/', vistas.editar_perfil, name='editar_perfil'),
-```
+### ✅ Sprint 5 entregables
+- [x] Búsqueda de cuentas
+- [x] Filtros por tipo de cuenta
+- [x] Paginación en listado
+- [x] Edición de perfil con foto
+- [x] Recarga de saldo desde página web
+- [x] Botón de recarga en cada cuenta
+- [x] 2 nuevos templates (total: 9)
 
 ---
+
+## 📁 LISTA COMPLETA DE TEMPLATES (9 archivos)
+
+```
+core/templates/core/
+├── base.html           # Plantilla base con navegación y estilos
+├── inicio.html         # Listado público de cuentas
+├── registro.html       # Formulario de registro
+├── iniciar_sesion.html # Formulario de login
+├── panel.html          # Dashboard del usuario
+├── crear_cuenta.html   # Formulario para crear cuenta
+├── transferencia.html  # Formulario para transferir
+├── editar_perfil.html  # Formulario para editar perfil
+└── recargar.html       # Formulario para recargar saldo
+```
 
 ## 📊 Diagrama de Relaciones
 
 ```
 Usuario (1) ──────→ (N) Cuenta
-                           │
-                           │ (N:M)
-                           ↓
-                     TipoCuenta
+                       │
+                       │ (N:M)
+                       ↓
+                 TipoCuenta
 
 Transacción (N) ←──→ (N) Cuenta (a través de DetalleTransaccion)
 ```
 
-## 🛠️ Tecnologías
+## 🛠️ Tecnologías utilizadas
 
 | Tecnología | Versión | Propósito |
 |------------|---------|-----------|
@@ -229,10 +233,10 @@ Transacción (N) ←──→ (N) Cuenta (a través de DetalleTransaccion)
 | Pillow | 10.3+ | Manejo de imágenes |
 | HTML5/CSS3 | - | Interfaz de usuario |
 
-## 📦 Instalación
+## 📦 Instalación rápida
 
 ```bash
-git clone https://github.com/anitasusnanita-jpg/Proyecto-Banco-Digital.git
+git clone https://github.com/-jpg/Proyecto-Banco-Digital.git
 cd Proyecto-Banco-Digital
 python -m venv venv
 venv\Scripts\activate
@@ -242,41 +246,34 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-## 🧪 Flujo de prueba
+## 🧪 Flujo de prueba completo
 
-1. Ir a /registro/ y crear usuario con foto
-2. Ir a /admin/ y crear Tipos de Cuenta (Ahorro, Corriente, Nómina, Inversión)
-3. Ir a /cuenta/crear/ y abrir cuenta con saldo inicial
-4. Ir a /panel/ y ver dashboard
-5. Ir a /transferencia/ y transferir a otra cuenta
-6. Ver movimientos reflejados en panel
+| Paso | Acción | Template involucrado |
+|------|--------|---------------------|
+| 1 | `/registro/` | registro.html |
+| 2 | `/admin/` | (admin de Django) |
+| 3 | `/cuenta/crear/` | crear_cuenta.html |
+| 4 | `/panel/` | panel.html |
+| 5 | Click en "Recargar" | recargar.html |
+| 6 | `/transferencia/` | transferencia.html |
+| 7 | `/perfil/editar/` | editar_perfil.html |
 
-## ✅ Resultado Final
+## ✅ Resumen de Sprints
 
-El Banco Digital ya tiene:
-- ✔ Autenticación con foto de perfil
-- ✔ Roles de usuario
-- ✔ CRUD de cuentas
-- ✔ Dashboard financiero
-- ✔ Transferencias bancarias
-- ✔ Filtros y búsqueda
-- ✔ Paginación
-- ✔ Panel admin en español
+| Sprint | Nombre | Templates | Entregables |
+|--------|--------|-----------|-------------|
+| 1 | Setup + Modelado Base | 0 | Modelos 1:N y N:M |
+| 2 | Autenticación + UI Base | 4 | base, inicio, registro, login |
+| 3 | Gestión de Cuentas | 2 | panel, crear_cuenta |
+| 4 | Transferencias | 1 | transferencia |
+| 5 | Optimización + Recarga | 2 | editar_perfil, recargar |
+| **Total** | | **9** | **Sistema completo** |
 
-## 👤 Autor
 
-- **Anita Susana** - [@anitaanita-jpg](https://github.com/anitaanita-jpg)
-
-## 📄 Licencia
-
-MIT License
-```
-
-## 📝 Guardar y subir:
+## 📝 Guardar cambios:
 
 ```bash
 git add README.md
-git commit -m "actualizado readme con estructura de sprints como el marketplace original"
+git commit -m "readme actualizado con lista completa de 9 templates y detalle de cada sprint"
 git push
 ```
-
