@@ -1,7 +1,14 @@
 # 🏦 Banco Digital - Django 
-Sistema bancario completo desarrollado con Django y SQLite que permite gestión de cuentas, transferencias, recarga de saldo y dashboard financiero.
+Banco Digital es una plataforma bancaria simulada construida con Django que permite a los usuarios gestionar múltiples cuentas bancarias, realizar transferencias, consultar movimientos y administrar su perfil de forma intuitiva y segura.
+
+El sistema incluye autenticación completa (registro, login, logout), un panel de control personal con saldo total agregado, listado de cuentas propias y últimos movimientos recientes. Los usuarios pueden abrir nuevas cuentas asociadas a diferentes tipos (ahorro, corriente, inversión), recargar saldo, transferir dinero entre cuentas con validación de saldo suficiente, y editar su perfil incluyendo foto, teléfono y dirección.
+
+La plataforma también ofrece un listado público de cuentas con búsqueda por número o nombre de usuario, filtros por tipo de cuenta y paginación. Cada transacción queda registrada automáticamente con fecha, tipo, monto y descripción, manteniendo un historial completo de movimientos.
+
+El proyecto utiliza UUID como identificador principal para evitar enumeración de recursos, relaciones 1:N entre usuario y cuentas, y relaciones N:M entre cuentas y tipos de cuenta. La interfaz es responsive, usa CSS puro e incluye mensajes flash de éxito o error para cada operación. Banco Digital es ideal como proyecto de portafolio, base para productos reales o material educativo sobre Django.
 
 ---
+
 
 ## 🚀 SPRINT 1 — Setup + Modelado Base
 
@@ -24,6 +31,14 @@ python manage.py startapp core
 - `Cuenta` (numero_cuenta, saldo, estado)
 - `Transaccion` (tipo, descripción, fecha)
 - `DetalleTransaccion` (monto, tabla intermedia)
+
+# 🗄️Diseño del modelo
+
+Diseño de la Base De Datos Relacional en Diagrama Entidad-Relacion que contine de uno a muchos y de muchos a muchos.
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/640c59b7-4889-4922-a5a5-9f1144cf89d9" />
+
+
 
 ### Relaciones implementadas
 | Relación | Tipo |
@@ -268,4 +283,12 @@ python manage.py runserver
 | 5 | Optimización + Recarga | 2 | editar_perfil, recargar |
 | **Total** | | **9** | **Sistema completo** |
 
+# 🏦 Conclusion
+El desarrollo de Banco Digital ha demostrado ser un ejercicio completo y exitoso en la construcción de una aplicación web funcional utilizando el framework Django. A lo largo de 5 sprints, se implementó un sistema bancario simulado que integra autenticación de usuarios, gestión de cuentas, transferencias, recargas de saldo, edición de perfil y un dashboard financiero personalizado.
+
+Se cumplieron todos los objetivos planteados inicialmente: modelado de datos con relaciones 1:N y N:M, panel de administración funcional, sistema de registro y login con foto de perfil, navegación dinámica, CRUD de cuentas, transferencias seguras con validación de saldo, paginación, búsqueda con filtros y edición de perfil. El proyecto cuenta con 9 templates completamente integrados y una interfaz responsive con CSS puro.
+
+Las decisiones técnicas adoptadas resultaron acertadas. El uso de UUID como clave primaria mejora la seguridad al evitar la enumeración de recursos. La tabla intermedia DetalleTransaccion permite mayor flexibilidad para futuros tipos de operaciones. La optimización con select_related y prefetch_related reduce drásticamente el número de consultas a la base de datos. Las validaciones del lado del servidor garantizan la integridad de las operaciones financieras.
+
+Banco Digital es un proyecto funcional, extensible y bien documentado que sirve como base sólida para agregar nuevas características como notificaciones por correo, reportes en PDF, gráficos de gastos, autenticación con redes sociales o integración con pasarelas de pago reales. Es ideal para portafolio profesional, material educativo o punto de partida para un producto financiero real.
 ---------------------------------------------------------------------------
