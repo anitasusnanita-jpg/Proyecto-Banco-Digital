@@ -85,6 +85,7 @@ def crear_cuenta(request):
         if formulario.is_valid():
             cuenta = formulario.save(commit=False)
             cuenta.propietario = request.user
+            cuenta.saldo = 0
             cuenta.save()
             formulario.save_m2m()
             messages.success(request, 'Cuenta creada exitosamente')
@@ -183,7 +184,7 @@ def recargar_saldo(request, cuenta_id):
             cuenta.saldo += monto
             cuenta.save()
             
-            messages.success(request, f'¡Recarga exitosa! Se añadieron ${monto} a tu cuenta {cuenta.numero_cuenta}')
+            messages.success(request, f'¡Recarga exitosa! Se añadieron ${monto} a tu cuenta')
             return redirect('panel')
     
     return render(request, 'core/recargar.html', {'cuenta': cuenta})
