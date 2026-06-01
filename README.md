@@ -76,7 +76,7 @@ En la actualidad, los sistemas bancarios en línea son una necesidad fundamental
 
 ### 1.5 Estructura del proyecto
 
-```
+
 Banco Digital/
 ├── banco/
 │   ├── settings.py
