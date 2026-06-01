@@ -130,7 +130,7 @@ Desarrolladores web, instituciones educativas, pequeñas empresas.
 ## 2. DESARROLLO
 
 ### 2.1 Configuración del proyecto (settings.py)
-
+´´´python
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -140,7 +140,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
 ]
-
+´´´
 ### 2.2 Modelos y relaciones (models.py)
 
 import uuid
