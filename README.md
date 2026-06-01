@@ -1,6 +1,6 @@
 ```markdown
-<img width="148" height="148" alt="image" src="https://github.com/user-attachments/assets/6965211b-8ccd-4084-9759-f2c92697f52c" />
-
+![Texto alternativo](https://github.com/user-attachments/assets/6965211b-8ccd-4084-9759-f2c92697f52c" />
+)
 # 🏦 BANCO DIGITAL - SISTEMA BANCARIO CON DJANGO
 
 **Nombre del Proyecto:** Sistema Bancario  
