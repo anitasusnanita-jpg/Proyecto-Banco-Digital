@@ -142,7 +142,6 @@ Desarrolladores web, instituciones educativas, pequeñas empresas.
 ]
 </pre></div>
 
-
 ### 2.2 Modelos y relaciones (models.py)
 
 <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #080; font-weight: bold">import</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">uuid</span>
