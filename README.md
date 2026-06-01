@@ -1,5 +1,5 @@
 ```markdown
-<img width="148" height="148" alt="image" src="https://github.com/user-attachments/assets/fe661a68-f706-4f80-807b-e7b8545a5e5e" />
+<img width="148" height="148" alt="image" src="https://github.com/user-attachments/assets/6965211b-8ccd-4084-9759-f2c92697f52c" />
 
 # 🏦 BANCO DIGITAL - SISTEMA BANCARIO CON DJANGO
 
@@ -131,538 +131,571 @@ Desarrolladores web, instituciones educativas, pequeñas empresas.
 
 ### 2.1 Configuración del proyecto (settings.py)
 
-<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span>INSTALLED_APPS <span style="color: #333">=</span> [
-    <span style="background-color: #FFF0F0">&#39;django.contrib.admin&#39;</span>,
-    <span style="background-color: #FFF0F0">&#39;django.contrib.auth&#39;</span>,
-    <span style="background-color: #FFF0F0">&#39;django.contrib.contenttypes&#39;</span>,
-    <span style="background-color: #FFF0F0">&#39;django.contrib.sessions&#39;</span>,
-    <span style="background-color: #FFF0F0">&#39;django.contrib.messages&#39;</span>,
-    <span style="background-color: #FFF0F0">&#39;django.contrib.staticfiles&#39;</span>,
-    <span style="background-color: #FFF0F0">&#39;core&#39;</span>,
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'core',
 ]
-</pre></div>
 
 ### 2.2 Modelos y relaciones (models.py)
 
-<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #080; font-weight: bold">import</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">uuid</span>
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.db</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> models
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.contrib.auth.models</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> AbstractUser
+import uuid
+from django.db import models
+from django.contrib.auth.models import AbstractUser
 
+class Usuario(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    telefono = models.CharField(max_length=15, blank=True)
+    direccion = models.TextField(blank=True)
+    foto_perfil = models.ImageField(upload_to='fotos_perfil/', blank=True, null=True)
 
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">Usuario</span>(AbstractUser):
-    <span style="color: #007020">id</span> <span style="color: #333">=</span> models<span style="color: #333">.</span>UUIDField(primary_key<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>, default<span style="color: #333">=</span>uuid<span style="color: #333">.</span>uuid4, editable<span style="color: #333">=</span><span style="color: #080; font-weight: bold">False</span>)
-    telefono <span style="color: #333">=</span> models<span style="color: #333">.</span>CharField(max_length<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">15</span>, blank<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
-    direccion <span style="color: #333">=</span> models<span style="color: #333">.</span>TextField(blank<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
-    foto_perfil <span style="color: #333">=</span> models<span style="color: #333">.</span>ImageField(upload_to<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;fotos_perfil/&#39;</span>, blank<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>, null<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
+    def __str__(self):
+        return self.username
 
+class TipoCuenta(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True)
+    tasa_interes = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    cuota_mensual = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">__str__</span>(<span style="color: #007020">self</span>):
-        <span style="color: #080; font-weight: bold">return</span> <span style="color: #007020">self</span><span style="color: #333">.</span>username
+    def __str__(self):
+        return self.nombre
 
-
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">TipoCuenta</span>(models<span style="color: #333">.</span>Model):
-    <span style="color: #007020">id</span> <span style="color: #333">=</span> models<span style="color: #333">.</span>UUIDField(primary_key<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>, default<span style="color: #333">=</span>uuid<span style="color: #333">.</span>uuid4, editable<span style="color: #333">=</span><span style="color: #080; font-weight: bold">False</span>)
-    nombre <span style="color: #333">=</span> models<span style="color: #333">.</span>CharField(max_length<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">100</span>)
-    descripcion <span style="color: #333">=</span> models<span style="color: #333">.</span>TextField(blank<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
-    tasa_interes <span style="color: #333">=</span> models<span style="color: #333">.</span>DecimalField(max_digits<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">5</span>, decimal_places<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">2</span>, default<span style="color: #333">=</span><span style="color: #60E; font-weight: bold">0.00</span>)
-    cuota_mensual <span style="color: #333">=</span> models<span style="color: #333">.</span>DecimalField(max_digits<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">10</span>, decimal_places<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">2</span>, default<span style="color: #333">=</span><span style="color: #60E; font-weight: bold">0.00</span>)
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">__str__</span>(<span style="color: #007020">self</span>):
-        <span style="color: #080; font-weight: bold">return</span> <span style="color: #007020">self</span><span style="color: #333">.</span>nombre
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">Cuenta</span>(models<span style="color: #333">.</span>Model):
-    ESTADOS <span style="color: #333">=</span> [
-        (<span style="background-color: #FFF0F0">&#39;activa&#39;</span>, <span style="background-color: #FFF0F0">&#39;Activa&#39;</span>),
-        (<span style="background-color: #FFF0F0">&#39;bloqueada&#39;</span>, <span style="background-color: #FFF0F0">&#39;Bloqueada&#39;</span>),
-        (<span style="background-color: #FFF0F0">&#39;cerrada&#39;</span>, <span style="background-color: #FFF0F0">&#39;Cerrada&#39;</span>),
+class Cuenta(models.Model):
+    ESTADOS = [
+        ('activa', 'Activa'),
+        ('bloqueada', 'Bloqueada'),
+        ('cerrada', 'Cerrada'),
     ]
-    <span style="color: #007020">id</span> <span style="color: #333">=</span> models<span style="color: #333">.</span>UUIDField(primary_key<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>, default<span style="color: #333">=</span>uuid<span style="color: #333">.</span>uuid4, editable<span style="color: #333">=</span><span style="color: #080; font-weight: bold">False</span>)
-    numero_cuenta <span style="color: #333">=</span> models<span style="color: #333">.</span>CharField(max_length<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">20</span>, unique<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
-    saldo <span style="color: #333">=</span> models<span style="color: #333">.</span>DecimalField(max_digits<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">12</span>, decimal_places<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">2</span>, default<span style="color: #333">=</span><span style="color: #60E; font-weight: bold">0.00</span>)
-    estado <span style="color: #333">=</span> models<span style="color: #333">.</span>CharField(max_length<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">10</span>, choices<span style="color: #333">=</span>ESTADOS, default<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;activa&#39;</span>)
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    numero_cuenta = models.CharField(max_length=20, unique=True)
+    saldo = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    estado = models.CharField(max_length=10, choices=ESTADOS, default='activa')
 
-    propietario <span style="color: #333">=</span> models<span style="color: #333">.</span>ForeignKey(
+    propietario = models.ForeignKey(
         Usuario,
-        on_delete<span style="color: #333">=</span>models<span style="color: #333">.</span>CASCADE,
-        related_name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;cuentas&#39;</span>
+        on_delete=models.CASCADE,
+        related_name='cuentas'
     )
 
-
-    tipos_cuenta <span style="color: #333">=</span> models<span style="color: #333">.</span>ManyToManyField(
+    tipos_cuenta = models.ManyToManyField(
         TipoCuenta,
-        related_name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;cuentas&#39;</span>
+        related_name='cuentas'
     )
 
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
-    fecha_creacion <span style="color: #333">=</span> models<span style="color: #333">.</span>DateTimeField(auto_now_add<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
+    def __str__(self):
+        return f"{self.numero_cuenta} - ${self.saldo}"
 
-
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">__str__</span>(<span style="color: #007020">self</span>):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;</span><span style="background-color: #EEE">{</span><span style="color: #007020">self</span><span style="color: #333">.</span>numero_cuenta<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0"> - $</span><span style="background-color: #EEE">{</span><span style="color: #007020">self</span><span style="color: #333">.</span>saldo<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-
-
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">Transaccion</span>(models<span style="color: #333">.</span>Model):
-    TIPOS_TRANSACCION <span style="color: #333">=</span> [
-        (<span style="background-color: #FFF0F0">&#39;deposito&#39;</span>, <span style="background-color: #FFF0F0">&#39;Depósito&#39;</span>),
-        (<span style="background-color: #FFF0F0">&#39;retiro&#39;</span>, <span style="background-color: #FFF0F0">&#39;Retiro&#39;</span>),
-        (<span style="background-color: #FFF0F0">&#39;transferencia&#39;</span>, <span style="background-color: #FFF0F0">&#39;Transferencia&#39;</span>),
-        (<span style="background-color: #FFF0F0">&#39;pago&#39;</span>, <span style="background-color: #FFF0F0">&#39;Pago&#39;</span>),
+class Transaccion(models.Model):
+    TIPOS_TRANSACCION = [
+        ('deposito', 'Depósito'),
+        ('retiro', 'Retiro'),
+        ('transferencia', 'Transferencia'),
+        ('pago', 'Pago'),
     ]
-    <span style="color: #007020">id</span> <span style="color: #333">=</span> models<span style="color: #333">.</span>UUIDField(primary_key<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>, default<span style="color: #333">=</span>uuid<span style="color: #333">.</span>uuid4, editable<span style="color: #333">=</span><span style="color: #080; font-weight: bold">False</span>)
-    tipo_transaccion <span style="color: #333">=</span> models<span style="color: #333">.</span>CharField(max_length<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">20</span>, choices<span style="color: #333">=</span>TIPOS_TRANSACCION)
-    descripcion <span style="color: #333">=</span> models<span style="color: #333">.</span>TextField(blank<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tipo_transaccion = models.CharField(max_length=20, choices=TIPOS_TRANSACCION)
+    descripcion = models.TextField(blank=True)
 
-    usuario <span style="color: #333">=</span> models<span style="color: #333">.</span>ForeignKey(
+    usuario = models.ForeignKey(
         Usuario,
-        on_delete<span style="color: #333">=</span>models<span style="color: #333">.</span>CASCADE,
-        related_name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;transacciones&#39;</span>
+        on_delete=models.CASCADE,
+        related_name='transacciones'
     )
-    cuentas <span style="color: #333">=</span> models<span style="color: #333">.</span>ManyToManyField(
-        Cuenta,
-        through<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;DetalleTransaccion&#39;</span>,
-        related_name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;transacciones&#39;</span>
-    )
-    fecha <span style="color: #333">=</span> models<span style="color: #333">.</span>DateTimeField(auto_now_add<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">__str__</span>(<span style="color: #007020">self</span>):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;</span><span style="background-color: #EEE">{</span><span style="color: #007020">self</span><span style="color: #333">.</span>tipo_transaccion<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0"> - </span><span style="background-color: #EEE">{</span><span style="color: #007020">self</span><span style="color: #333">.</span>fecha<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-    <span style="color: #555; font-weight: bold">@property</span>
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">monto_total</span>(<span style="color: #007020">self</span>):
-        <span style="color: #080; font-weight: bold">return</span> <span style="color: #007020">sum</span>(detalle<span style="color: #333">.</span>monto <span style="color: #080; font-weight: bold">for</span> detalle <span style="color: #000; font-weight: bold">in</span> <span style="color: #007020">self</span><span style="color: #333">.</span>detalletransaccion_set<span style="color: #333">.</span>all())
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">DetalleTransaccion</span>(models<span style="color: #333">.</span>Model):
-    <span style="color: #007020">id</span> <span style="color: #333">=</span> models<span style="color: #333">.</span>UUIDField(primary_key<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>, default<span style="color: #333">=</span>uuid<span style="color: #333">.</span>uuid4, editable<span style="color: #333">=</span><span style="color: #080; font-weight: bold">False</span>)
-    transaccion <span style="color: #333">=</span> models<span style="color: #333">.</span>ForeignKey(Transaccion, on_delete<span style="color: #333">=</span>models<span style="color: #333">.</span>CASCADE)
-    cuenta <span style="color: #333">=</span> models<span style="color: #333">.</span>ForeignKey(Cuenta, on_delete<span style="color: #333">=</span>models<span style="color: #333">.</span>CASCADE)
-    monto <span style="color: #333">=</span> models<span style="color: #333">.</span>DecimalField(max_digits<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">12</span>, decimal_places<span style="color: #333">=</span><span style="color: #00D; font-weight: bold">2</span>)
-    <span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">Meta</span>:
-        unique_together <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;transaccion&#39;</span>, <span style="background-color: #FFF0F0">&#39;cuenta&#39;</span>)
-    <span style="color: #555; font-weight: bold">@property</span>
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">monto_absoluto</span>(<span style="color: #007020">self</span>):
-        <span style="color: #080; font-weight: bold">return</span> <span style="color: #007020">abs</span>(<span style="color: #007020">self</span><span style="color: #333">.</span>monto)
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">__str__</span>(<span style="color: #007020">self</span>):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;</span><span style="background-color: #EEE">{</span><span style="color: #007020">self</span><span style="color: #333">.</span>transaccion<span style="color: #333">.</span>id<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0"> - </span><span style="background-color: #EEE">{</span><span style="color: #007020">self</span><span style="color: #333">.</span>cuenta<span style="color: #333">.</span>numero_cuenta<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">: $</span><span style="background-color: #EEE">{</span><span style="color: #007020">self</span><span style="color: #333">.</span>monto<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-</pre></div>
 
+    cuentas = models.ManyToManyField(
+        Cuenta,
+        through='DetalleTransaccion',
+        related_name='transacciones'
+    )
+
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.tipo_transaccion} - {self.fecha}"
+
+    @property
+    def monto_total(self):
+        return sum(detalle.monto for detalle in self.detalletransaccion_set.all())
+
+class DetalleTransaccion(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    transaccion = models.ForeignKey(Transaccion, on_delete=models.CASCADE)
+    cuenta = models.ForeignKey(Cuenta, on_delete=models.CASCADE)
+
+    monto = models.DecimalField(max_digits=12, decimal_places=2)
+
+    class Meta:
+        unique_together = ('transaccion', 'cuenta')
+
+    @property
+    def monto_absoluto(self):
+        return abs(self.monto)
+
+    def __str__(self):
+        return f"{self.transaccion.id} - {self.cuenta.numero_cuenta}: ${self.monto}"
 
 ![Diagrama ER](https://github.com/user-attachments/assets/640c59b7-4889-4922-a5a5-9f1144cf89d9)
 
 ### 2.3 URLs (urls.py)
 
 **Banco/urls.py:**
-<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.contrib</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> admin
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.urls</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> path, include
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.conf</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> settings
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.conf.urls.static</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> static
-urlpatterns <span style="color: #333">=</span> [
-    path(<span style="background-color: #FFF0F0">&#39;admin/&#39;</span>, admin<span style="color: #333">.</span>site<span style="color: #333">.</span>urls),
-    path(<span style="background-color: #FFF0F0">&#39;&#39;</span>, include(<span style="background-color: #FFF0F0">&#39;core.urls&#39;</span>)),
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('core.urls')),
 ]
-<span style="color: #080; font-weight: bold">if</span> settings<span style="color: #333">.</span>DEBUG:
-    urlpatterns <span style="color: #333">+=</span> static(settings<span style="color: #333">.</span>MEDIA_URL, document_root<span style="color: #333">=</span>settings<span style="color: #333">.</span>MEDIA_ROOT)
-</pre></div>
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 **Core/urls.py:**
-<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.urls</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> path
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">.</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> views  
-urlpatterns <span style="color: #333">=</span> [
-    path(<span style="background-color: #FFF0F0">&#39;&#39;</span>, views<span style="color: #333">.</span>inicio, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;inicio&#39;</span>),
-    path(<span style="background-color: #FFF0F0">&#39;registro/&#39;</span>, views<span style="color: #333">.</span>registro, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;registro&#39;</span>),
-    path(<span style="background-color: #FFF0F0">&#39;iniciar-sesion/&#39;</span>, views<span style="color: #333">.</span>iniciar_sesion, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;iniciar_sesion&#39;</span>),
-    path(<span style="background-color: #FFF0F0">&#39;cerrar-sesion/&#39;</span>, views<span style="color: #333">.</span>cerrar_sesion, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;cerrar_sesion&#39;</span>),
-    path(<span style="background-color: #FFF0F0">&#39;panel/&#39;</span>, views<span style="color: #333">.</span>panel, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;panel&#39;</span>),
-    path(<span style="background-color: #FFF0F0">&#39;cuenta/crear/&#39;</span>, views<span style="color: #333">.</span>crear_cuenta, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;crear_cuenta&#39;</span>),
-    path(<span style="background-color: #FFF0F0">&#39;transferencia/&#39;</span>, views<span style="color: #333">.</span>realizar_transferencia, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;transferencia&#39;</span>),
-    path(<span style="background-color: #FFF0F0">&#39;perfil/editar/&#39;</span>, views<span style="color: #333">.</span>editar_perfil, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;editar_perfil&#39;</span>),
-    path(<span style="background-color: #FFF0F0">&#39;recargar/&lt;uuid:cuenta_id&gt;/&#39;</span>, views<span style="color: #333">.</span>recargar_saldo, name<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;recargar&#39;</span>),
+from django.urls import path
+from . import views  
+urlpatterns = [
+    path('', views.inicio, name='inicio'),
+    path('registro/', views.registro, name='registro'),
+    path('iniciar-sesion/', views.iniciar_sesion, name='iniciar_sesion'),
+    path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
+    path('panel/', views.panel, name='panel'),
+    path('cuenta/crear/', views.crear_cuenta, name='crear_cuenta'),
+    path('transferencia/', views.realizar_transferencia, name='transferencia'),
+    path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
+    path('recargar/<uuid:cuenta_id>/', views.recargar_saldo, name='recargar'),
 ]
-</pre></div>
 
 ### 2.4 Formularios (forms.py)
 
-<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> forms
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.contrib.auth.forms</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> UserCreationForm
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">.models</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> Usuario, Cuenta
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">FormularioRegistro</span>(UserCreationForm):
-    email <span style="color: #333">=</span> forms<span style="color: #333">.</span>EmailField(required<span style="color: #333">=</span><span style="color: #080; font-weight: bold">True</span>)
-    telefono <span style="color: #333">=</span> forms<span style="color: #333">.</span>CharField(required<span style="color: #333">=</span><span style="color: #080; font-weight: bold">False</span>, label<span style="color: #333">=</span><span style="background-color: #FFF0F0">&quot;Teléfono&quot;</span>)
-    foto_perfil <span style="color: #333">=</span> forms<span style="color: #333">.</span>ImageField(required<span style="color: #333">=</span><span style="color: #080; font-weight: bold">False</span>, label<span style="color: #333">=</span><span style="background-color: #FFF0F0">&quot;Foto de perfil&quot;</span>)   
-    <span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">Meta</span>:
-        model <span style="color: #333">=</span> Usuario
-        fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;username&#39;</span>, <span style="background-color: #FFF0F0">&#39;email&#39;</span>, <span style="background-color: #FFF0F0">&#39;telefono&#39;</span>, <span style="background-color: #FFF0F0">&#39;foto_perfil&#39;</span>, <span style="background-color: #FFF0F0">&#39;password1&#39;</span>, <span style="background-color: #FFF0F0">&#39;password2&#39;</span>)
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">FormularioCuenta</span>(forms<span style="color: #333">.</span>ModelForm):
-    <span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">Meta</span>:
-        model <span style="color: #333">=</span> Cuenta
-        fields <span style="color: #333">=</span> [<span style="background-color: #FFF0F0">&#39;numero_cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;tipos_cuenta&#39;</span>]
-        widgets <span style="color: #333">=</span> {
-            <span style="background-color: #FFF0F0">&#39;tipos_cuenta&#39;</span>: forms<span style="color: #333">.</span>CheckboxSelectMultiple()
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import Usuario, Cuenta
+class FormularioRegistro(UserCreationForm):
+    email = forms.EmailField(required=True)
+    telefono = forms.CharField(required=False, label="Teléfono")
+    foto_perfil = forms.ImageField(required=False, label="Foto de perfil")   
+    class Meta:
+        model = Usuario
+        fields = ('username', 'email', 'telefono', 'foto_perfil', 'password1', 'password2')
+class FormularioCuenta(forms.ModelForm):
+    class Meta:
+        model = Cuenta
+        fields = ['numero_cuenta', 'tipos_cuenta']
+        widgets = {
+            'tipos_cuenta': forms.CheckboxSelectMultiple()
         }
 
 
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">FormularioActualizarUsuario</span>(forms<span style="color: #333">.</span>ModelForm):
-    <span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">Meta</span>:
-        model <span style="color: #333">=</span> Usuario
-        fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;username&#39;</span>, <span style="background-color: #FFF0F0">&#39;email&#39;</span>, <span style="background-color: #FFF0F0">&#39;telefono&#39;</span>, <span style="background-color: #FFF0F0">&#39;direccion&#39;</span>, <span style="background-color: #FFF0F0">&#39;foto_perfil&#39;</span>)
-</pre></div>
+class FormularioActualizarUsuario(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ('username', 'email', 'telefono', 'direccion', 'foto_perfil')
+
 
 ### 2.5 Vistas (views.py)
-<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.shortcuts</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> render, redirect, get_object_or_404
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.contrib.auth</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> login, authenticate, logout
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.contrib.auth.decorators</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> login_required
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.contrib</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> messages
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.db.models</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> Q, Sum
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.core.paginator</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> Paginator
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">decimal</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> Decimal
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">.models</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> Usuario, Cuenta, TipoCuenta, Transaccion, DetalleTransaccion
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">.forms</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> FormularioRegistro, FormularioCuenta, FormularioActualizarUsuario
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">inicio</span>(request):
-    busqueda <span style="color: #333">=</span> request<span style="color: #333">.</span>GET<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;q&#39;</span>)
-    tipo_cuenta_id <span style="color: #333">=</span> request<span style="color: #333">.</span>GET<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;tipo_cuenta&#39;</span>)   
-    cuentas <span style="color: #333">=</span> Cuenta<span style="color: #333">.</span>objects<span style="color: #333">.</span>select_related(<span style="background-color: #FFF0F0">&#39;propietario&#39;</span>)<span style="color: #333">.</span>prefetch_related(<span style="background-color: #FFF0F0">&#39;tipos_cuenta&#39;</span>)<span style="color: #333">.</span>all()
-    <span style="color: #080; font-weight: bold">if</span> busqueda:
-        cuentas <span style="color: #333">=</span> cuentas<span style="color: #333">.</span>filter(
-            Q(numero_cuenta__icontains<span style="color: #333">=</span>busqueda) <span style="color: #333">|</span>
-            Q(propietario__username__icontains<span style="color: #333">=</span>busqueda)        )   
-    <span style="color: #080; font-weight: bold">if</span> tipo_cuenta_id:
-        cuentas <span style="color: #333">=</span> cuentas<span style="color: #333">.</span>filter(tipos_cuenta__id<span style="color: #333">=</span>tipo_cuenta_id)
-    paginador <span style="color: #333">=</span> Paginator(cuentas, <span style="color: #00D; font-weight: bold">6</span>)
-    numero_pagina <span style="color: #333">=</span> request<span style="color: #333">.</span>GET<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;page&#39;</span>)
-    pagina_objetos <span style="color: #333">=</span> paginador<span style="color: #333">.</span>get_page(numero_pagina)
-    tipos_cuenta <span style="color: #333">=</span> TipoCuenta<span style="color: #333">.</span>objects<span style="color: #333">.</span>all()   
-    <span style="color: #080; font-weight: bold">return</span> render(request, <span style="background-color: #FFF0F0">&#39;core/inicio.html&#39;</span>, {
-        <span style="background-color: #FFF0F0">&#39;pagina_objetos&#39;</span>: pagina_objetos,
-        <span style="background-color: #FFF0F0">&#39;tipos_cuenta&#39;</span>: tipos_cuenta
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.db.models import Q, Sum
+from django.core.paginator import Paginator
+from decimal import Decimal
+
+from .models import Usuario, Cuenta, TipoCuenta, Transaccion, DetalleTransaccion
+from .forms import FormularioRegistro, FormularioCuenta, FormularioActualizarUsuario
+
+def inicio(request):
+    busqueda = request.GET.get('q')
+    tipo_cuenta_id = request.GET.get('tipo_cuenta')
+    
+    cuentas = Cuenta.objects.select_related('propietario').prefetch_related('tipos_cuenta').all()
+    
+    if busqueda:
+        cuentas = cuentas.filter(
+            Q(numero_cuenta__icontains=busqueda) |
+            Q(propietario__username__icontains=busqueda)
+        )
+    
+    if tipo_cuenta_id:
+        cuentas = cuentas.filter(tipos_cuenta__id=tipo_cuenta_id)
+    
+    paginador = Paginator(cuentas, 6)
+    numero_pagina = request.GET.get('page')
+    pagina_objetos = paginador.get_page(numero_pagina)
+    
+    tipos_cuenta = TipoCuenta.objects.all()
+    
+    return render(request, 'core/inicio.html', {
+        'pagina_objetos': pagina_objetos,
+        'tipos_cuenta': tipos_cuenta
     })
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">registro</span>(request):
-    <span style="color: #080; font-weight: bold">if</span> request<span style="color: #333">.</span>method <span style="color: #333">==</span> <span style="background-color: #FFF0F0">&#39;POST&#39;</span>:
-        formulario <span style="color: #333">=</span> FormularioRegistro(request<span style="color: #333">.</span>POST, request<span style="color: #333">.</span>FILES)
-        <span style="color: #080; font-weight: bold">if</span> formulario<span style="color: #333">.</span>is_valid():
-            usuario <span style="color: #333">=</span> formulario<span style="color: #333">.</span>save()
+
+def registro(request):
+    if request.method == 'POST':
+        formulario = FormularioRegistro(request.POST, request.FILES)
+        if formulario.is_valid():
+            usuario = formulario.save()
             login(request, usuario)
-            messages<span style="color: #333">.</span>success(request, <span style="background-color: #FFF0F0">&#39;Registro exitoso. Bienvenido al Banco Digital.&#39;</span>)
-            <span style="color: #080; font-weight: bold">return</span> redirect(<span style="background-color: #FFF0F0">&#39;inicio&#39;</span>)
-    <span style="color: #080; font-weight: bold">else</span>:
-        formulario <span style="color: #333">=</span> FormularioRegistro()
-     <span style="color: #080; font-weight: bold">return</span> render(request, <span style="background-color: #FFF0F0">&#39;core/registro.html&#39;</span>, {<span style="background-color: #FFF0F0">&#39;formulario&#39;</span>: formulario})
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">iniciar_sesion</span>(request):
-    <span style="color: #080; font-weight: bold">if</span> request<span style="color: #333">.</span>method <span style="color: #333">==</span> <span style="background-color: #FFF0F0">&#39;POST&#39;</span>:
-        username <span style="color: #333">=</span> request<span style="color: #333">.</span>POST<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;username&#39;</span>)
-        password <span style="color: #333">=</span> request<span style="color: #333">.</span>POST<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;password&#39;</span>)
-        usuario <span style="color: #333">=</span> authenticate(request, username<span style="color: #333">=</span>username, password<span style="color: #333">=</span>password)       
-        <span style="color: #080; font-weight: bold">if</span> usuario:
+            messages.success(request, 'Registro exitoso. Bienvenido al Banco Digital.')
+            return redirect('inicio')
+    else:
+        formulario = FormularioRegistro()
+    
+    return render(request, 'core/registro.html', {'formulario': formulario})
+
+def iniciar_sesion(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        usuario = authenticate(request, username=username, password=password)
+        
+        if usuario:
             login(request, usuario)
-            <span style="color: #080; font-weight: bold">return</span> redirect(<span style="background-color: #FFF0F0">&#39;inicio&#39;</span>)
-        <span style="color: #080; font-weight: bold">else</span>:
-            messages<span style="color: #333">.</span>error(request, <span style="background-color: #FFF0F0">&#39;Usuario o contraseña incorrectos&#39;</span>)   
-    <span style="color: #080; font-weight: bold">return</span> render(request, <span style="background-color: #FFF0F0">&#39;core/iniciar_sesion.html&#39;</span>)
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">cerrar_sesion</span>(request):
+            return redirect('inicio')
+        else:
+            messages.error(request, 'Usuario o contraseña incorrectos')
+    
+    return render(request, 'core/iniciar_sesion.html')
+
+def cerrar_sesion(request):
     logout(request)
-    <span style="color: #080; font-weight: bold">return</span> redirect(<span style="background-color: #FFF0F0">&#39;inicio&#39;</span>)
-<span style="color: #555; font-weight: bold">@login_required</span>
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">panel</span>(request):
-    cuentas <span style="color: #333">=</span> Cuenta<span style="color: #333">.</span>objects<span style="color: #333">.</span>filter(propietario<span style="color: #333">=</span>request<span style="color: #333">.</span>user)
-    saldo_total <span style="color: #333">=</span> cuentas<span style="color: #333">.</span>aggregate(Sum(<span style="background-color: #FFF0F0">&#39;saldo&#39;</span>))[<span style="background-color: #FFF0F0">&#39;saldo__sum&#39;</span>] <span style="color: #000; font-weight: bold">or</span> <span style="color: #00D; font-weight: bold">0</span>
-    transacciones_recientes <span style="color: #333">=</span> Transaccion<span style="color: #333">.</span>objects<span style="color: #333">.</span>filter(usuario<span style="color: #333">=</span>request<span style="color: #333">.</span>user)<span style="color: #333">.</span>order_by(<span style="background-color: #FFF0F0">&#39;-fecha&#39;</span>)[:<span style="color: #00D; font-weight: bold">5</span>]   
-    <span style="color: #080; font-weight: bold">return</span> render(request, <span style="background-color: #FFF0F0">&#39;core/panel.html&#39;</span>, {
-        <span style="background-color: #FFF0F0">&#39;cuentas&#39;</span>: cuentas,
-        <span style="background-color: #FFF0F0">&#39;saldo_total&#39;</span>: saldo_total,
-        <span style="background-color: #FFF0F0">&#39;transacciones_recientes&#39;</span>: transacciones_recientes
+    return redirect('inicio')
+
+@login_required
+def panel(request):
+    cuentas = Cuenta.objects.filter(propietario=request.user)
+    saldo_total = cuentas.aggregate(Sum('saldo'))['saldo__sum'] or 0
+    transacciones_recientes = Transaccion.objects.filter(usuario=request.user).order_by('-fecha')[:5]
+    
+    return render(request, 'core/panel.html', {
+        'cuentas': cuentas,
+        'saldo_total': saldo_total,
+        'transacciones_recientes': transacciones_recientes
     })
-<span style="color: #555; font-weight: bold">@login_required</span>
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">crear_cuenta</span>(request):
-    <span style="color: #080; font-weight: bold">if</span> request<span style="color: #333">.</span>method <span style="color: #333">==</span> <span style="background-color: #FFF0F0">&#39;POST&#39;</span>:
-        formulario <span style="color: #333">=</span> FormularioCuenta(request<span style="color: #333">.</span>POST)
-        <span style="color: #080; font-weight: bold">if</span> formulario<span style="color: #333">.</span>is_valid():
-            cuenta <span style="color: #333">=</span> formulario<span style="color: #333">.</span>save(commit<span style="color: #333">=</span><span style="color: #080; font-weight: bold">False</span>)
-            cuenta<span style="color: #333">.</span>propietario <span style="color: #333">=</span> request<span style="color: #333">.</span>user
-            cuenta<span style="color: #333">.</span>saldo <span style="color: #333">=</span> <span style="color: #00D; font-weight: bold">0</span>
-            cuenta<span style="color: #333">.</span>save()
-            formulario<span style="color: #333">.</span>save_m2m()
-            messages<span style="color: #333">.</span>success(request, <span style="background-color: #FFF0F0">&#39;Cuenta creada exitosamente&#39;</span>)
-            <span style="color: #080; font-weight: bold">return</span> redirect(<span style="background-color: #FFF0F0">&#39;panel&#39;</span>)
-    <span style="color: #080; font-weight: bold">else</span>:
-        formulario <span style="color: #333">=</span> FormularioCuenta()   
-    <span style="color: #080; font-weight: bold">return</span> render(request, <span style="background-color: #FFF0F0">&#39;core/crear_cuenta.html&#39;</span>, {<span style="background-color: #FFF0F0">&#39;formulario&#39;</span>: formulario})
-<span style="color: #555; font-weight: bold">@login_required</span>
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">realizar_transferencia</span>(request):
-    <span style="color: #080; font-weight: bold">if</span> request<span style="color: #333">.</span>method <span style="color: #333">==</span> <span style="background-color: #FFF0F0">&#39;POST&#39;</span>:
-        cuenta_origen_id <span style="color: #333">=</span> request<span style="color: #333">.</span>POST<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;cuenta_origen&#39;</span>)
-        numero_cuenta_destino <span style="color: #333">=</span> request<span style="color: #333">.</span>POST<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;cuenta_destino&#39;</span>)
-        monto <span style="color: #333">=</span> Decimal(request<span style="color: #333">.</span>POST<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;monto&#39;</span>))       
-        cuenta_origen <span style="color: #333">=</span> get_object_or_404(Cuenta, <span style="color: #007020">id</span><span style="color: #333">=</span>cuenta_origen_id, propietario<span style="color: #333">=</span>request<span style="color: #333">.</span>user)      
-        <span style="color: #080; font-weight: bold">try</span>:
-            cuenta_destino <span style="color: #333">=</span> Cuenta<span style="color: #333">.</span>objects<span style="color: #333">.</span>get(numero_cuenta<span style="color: #333">=</span>numero_cuenta_destino)
-        <span style="color: #080; font-weight: bold">except</span> Cuenta<span style="color: #333">.</span>DoesNotExist:
-            messages<span style="color: #333">.</span>error(request, <span style="background-color: #FFF0F0">&#39;La cuenta destino no existe&#39;</span>)
-            <span style="color: #080; font-weight: bold">return</span> redirect(<span style="background-color: #FFF0F0">&#39;transferencia&#39;</span>)       
-        <span style="color: #080; font-weight: bold">if</span> monto <span style="color: #333">&lt;=</span> <span style="color: #00D; font-weight: bold">0</span>:
-            messages<span style="color: #333">.</span>error(request, <span style="background-color: #FFF0F0">&#39;El monto debe ser mayor a cero&#39;</span>)
-        <span style="color: #080; font-weight: bold">elif</span> cuenta_origen<span style="color: #333">.</span>saldo <span style="color: #333">&lt;</span> monto:
-            messages<span style="color: #333">.</span>error(request, <span style="background-color: #FFF0F0">&#39;Saldo insuficiente&#39;</span>)
-        <span style="color: #080; font-weight: bold">elif</span> cuenta_origen<span style="color: #333">.</span>id <span style="color: #333">==</span> cuenta_destino<span style="color: #333">.</span>id:
-            messages<span style="color: #333">.</span>error(request, <span style="background-color: #FFF0F0">&#39;No puedes transferir a la misma cuenta&#39;</span>)
-        <span style="color: #080; font-weight: bold">else</span>:
-            transaccion <span style="color: #333">=</span> Transaccion<span style="color: #333">.</span>objects<span style="color: #333">.</span>create(
-                usuario<span style="color: #333">=</span>request<span style="color: #333">.</span>user,
-                tipo_transaccion<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;transferencia&#39;</span>,
-                descripcion<span style="color: #333">=</span><span style="background-color: #FFF0F0">f&quot;Transferencia a </span><span style="background-color: #EEE">{</span>cuenta_destino<span style="color: #333">.</span>numero_cuenta<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-            )           
-            DetalleTransaccion<span style="color: #333">.</span>objects<span style="color: #333">.</span>create(
-                transaccion<span style="color: #333">=</span>transaccion,
-                cuenta<span style="color: #333">=</span>cuenta_origen,
-                monto<span style="color: #333">=-</span>monto            )           
-            DetalleTransaccion<span style="color: #333">.</span>objects<span style="color: #333">.</span>create(
-                transaccion<span style="color: #333">=</span>transaccion,
-                cuenta<span style="color: #333">=</span>cuenta_destino,
-                monto<span style="color: #333">=</span>monto
-            )          
-            cuenta_origen<span style="color: #333">.</span>saldo <span style="color: #333">-=</span> monto
-            cuenta_origen<span style="color: #333">.</span>save()
-            cuenta_destino<span style="color: #333">.</span>saldo <span style="color: #333">+=</span> monto
-            cuenta_destino<span style="color: #333">.</span>save()           
-            messages<span style="color: #333">.</span>success(request, <span style="background-color: #FFF0F0">f&#39;Transferencia de $</span><span style="background-color: #EEE">{</span>monto<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0"> realizada con éxito&#39;</span>)
-            <span style="color: #080; font-weight: bold">return</span> redirect(<span style="background-color: #FFF0F0">&#39;panel&#39;</span>)   
-    cuentas <span style="color: #333">=</span> Cuenta<span style="color: #333">.</span>objects<span style="color: #333">.</span>filter(propietario<span style="color: #333">=</span>request<span style="color: #333">.</span>user, estado<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;activa&#39;</span>)
-    <span style="color: #080; font-weight: bold">return</span> render(request, <span style="background-color: #FFF0F0">&#39;core/transferencia.html&#39;</span>, {<span style="background-color: #FFF0F0">&#39;cuentas&#39;</span>: cuentas})
-<span style="color: #555; font-weight: bold">@login_required</span>
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">editar_perfil</span>(request):
-    <span style="color: #080; font-weight: bold">if</span> request<span style="color: #333">.</span>method <span style="color: #333">==</span> <span style="background-color: #FFF0F0">&#39;POST&#39;</span>:
-        formulario <span style="color: #333">=</span> FormularioActualizarUsuario(request<span style="color: #333">.</span>POST, request<span style="color: #333">.</span>FILES, instance<span style="color: #333">=</span>request<span style="color: #333">.</span>user)
-        <span style="color: #080; font-weight: bold">if</span> formulario<span style="color: #333">.</span>is_valid():
-            formulario<span style="color: #333">.</span>save()
-            messages<span style="color: #333">.</span>success(request, <span style="background-color: #FFF0F0">&#39;Perfil actualizado correctamente&#39;</span>)
-            <span style="color: #080; font-weight: bold">return</span> redirect(<span style="background-color: #FFF0F0">&#39;panel&#39;</span>)
-   
- <span style="color: #080; font-weight: bold">else</span>:
-        formulario <span style="color: #333">=</span> FormularioActualizarUsuario(instance<span style="color: #333">=</span>request<span style="color: #333">.</span>user)   
-    <span style="color: #080; font-weight: bold">return</span> render(request, <span style="background-color: #FFF0F0">&#39;core/editar_perfil.html&#39;</span>, {<span style="background-color: #FFF0F0">&#39;formulario&#39;</span>: formulario})
-<span style="color: #555; font-weight: bold">@login_required</span>
-<span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">recargar_saldo</span>(request, cuenta_id):
-    cuenta <span style="color: #333">=</span> get_object_or_404(Cuenta, <span style="color: #007020">id</span><span style="color: #333">=</span>cuenta_id, propietario<span style="color: #333">=</span>request<span style="color: #333">.</span>user)   
-    <span style="color: #080; font-weight: bold">if</span> request<span style="color: #333">.</span>method <span style="color: #333">==</span> <span style="background-color: #FFF0F0">&#39;POST&#39;</span>:
-        monto <span style="color: #333">=</span> Decimal(request<span style="color: #333">.</span>POST<span style="color: #333">.</span>get(<span style="background-color: #FFF0F0">&#39;monto&#39;</span>))       
-        <span style="color: #080; font-weight: bold">if</span> monto <span style="color: #333">&lt;=</span> <span style="color: #00D; font-weight: bold">0</span>:
-            messages<span style="color: #333">.</span>error(request, <span style="background-color: #FFF0F0">&#39;El monto debe ser mayor a cero&#39;</span>)
-        <span style="color: #080; font-weight: bold">else</span>:
-            transaccion <span style="color: #333">=</span> Transaccion<span style="color: #333">.</span>objects<span style="color: #333">.</span>create(
-                usuario<span style="color: #333">=</span>request<span style="color: #333">.</span>user,
-                tipo_transaccion<span style="color: #333">=</span><span style="background-color: #FFF0F0">&#39;deposito&#39;</span>,
-                descripcion<span style="color: #333">=</span><span style="background-color: #FFF0F0">f&quot;Recarga a cuenta </span><span style="background-color: #EEE">{</span>cuenta<span style="color: #333">.</span>numero_cuenta<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-            )         
-            DetalleTransaccion<span style="color: #333">.</span>objects<span style="color: #333">.</span>create(
-                transaccion<span style="color: #333">=</span>transaccion,
-                cuenta<span style="color: #333">=</span>cuenta,
-                monto<span style="color: #333">=</span>monto
-            )           
-            cuenta<span style="color: #333">.</span>saldo <span style="color: #333">+=</span> monto
-            cuenta<span style="color: #333">.</span>save()           
-            messages<span style="color: #333">.</span>success(request, <span style="background-color: #FFF0F0">f&#39;¡Recarga exitosa! Se añadieron $</span><span style="background-color: #EEE">{</span>monto<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0"> a tu cuenta&#39;</span>)
-            <span style="color: #080; font-weight: bold">return</span> redirect(<span style="background-color: #FFF0F0">&#39;panel&#39;</span>)
-   
-    <span style="color: #080; font-weight: bold">return</span> render(request, <span style="background-color: #FFF0F0">&#39;core/recargar.html&#39;</span>, {<span style="background-color: #FFF0F0">&#39;cuenta&#39;</span>: cuenta})
-</pre></div>
 
+@login_required
+def crear_cuenta(request):
+    if request.method == 'POST':
+        formulario = FormularioCuenta(request.POST)
+        if formulario.is_valid():
+            cuenta = formulario.save(commit=False)
+            cuenta.propietario = request.user
+            cuenta.saldo = 0
+            cuenta.save()
+            formulario.save_m2m()
+            messages.success(request, 'Cuenta creada exitosamente')
+            return redirect('panel')
+    else:
+        formulario = FormularioCuenta()
+    
+    return render(request, 'core/crear_cuenta.html', {'formulario': formulario})
+
+@login_required
+def realizar_transferencia(request):
+    if request.method == 'POST':
+        cuenta_origen_id = request.POST.get('cuenta_origen')
+        numero_cuenta_destino = request.POST.get('cuenta_destino')
+        monto = Decimal(request.POST.get('monto'))
+        
+        cuenta_origen = get_object_or_404(Cuenta, id=cuenta_origen_id, propietario=request.user)
+        
+        try:
+            cuenta_destino = Cuenta.objects.get(numero_cuenta=numero_cuenta_destino)
+        except Cuenta.DoesNotExist:
+            messages.error(request, 'La cuenta destino no existe')
+            return redirect('transferencia')
+        
+        if monto <= 0:
+            messages.error(request, 'El monto debe ser mayor a cero')
+        elif cuenta_origen.saldo < monto:
+            messages.error(request, 'Saldo insuficiente')
+        elif cuenta_origen.id == cuenta_destino.id:
+            messages.error(request, 'No puedes transferir a la misma cuenta')
+        else:
+            transaccion = Transaccion.objects.create(
+                usuario=request.user,
+                tipo_transaccion='transferencia',
+                descripcion=f"Transferencia a {cuenta_destino.numero_cuenta}"
+            )
+            
+            DetalleTransaccion.objects.create(
+                transaccion=transaccion,
+                cuenta=cuenta_origen,
+                monto=-monto
+            )
+            
+            DetalleTransaccion.objects.create(
+                transaccion=transaccion,
+                cuenta=cuenta_destino,
+                monto=monto
+            )
+            
+            cuenta_origen.saldo -= monto
+            cuenta_origen.save()
+            cuenta_destino.saldo += monto
+            cuenta_destino.save()
+            
+            messages.success(request, f'Transferencia de ${monto} realizada con éxito')
+            return redirect('panel')
+    
+    cuentas = Cuenta.objects.filter(propietario=request.user, estado='activa')
+    return render(request, 'core/transferencia.html', {'cuentas': cuentas})
+
+@login_required
+def editar_perfil(request):
+    if request.method == 'POST':
+        formulario = FormularioActualizarUsuario(request.POST, request.FILES, instance=request.user)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Perfil actualizado correctamente')
+            return redirect('panel')
+    else:
+        formulario = FormularioActualizarUsuario(instance=request.user)
+    
+    return render(request, 'core/editar_perfil.html', {'formulario': formulario})
+
+@login_required
+def recargar_saldo(request, cuenta_id):
+    cuenta = get_object_or_404(Cuenta, id=cuenta_id, propietario=request.user)
+    
+    if request.method == 'POST':
+        monto = Decimal(request.POST.get('monto'))
+        
+        if monto <= 0:
+            messages.error(request, 'El monto debe ser mayor a cero')
+        else:
+            transaccion = Transaccion.objects.create(
+                usuario=request.user,
+                tipo_transaccion='deposito',
+                descripcion=f"Recarga a cuenta {cuenta.numero_cuenta}"
+            )
+            
+            DetalleTransaccion.objects.create(
+                transaccion=transaccion,
+                cuenta=cuenta,
+                monto=monto
+            )
+            
+            cuenta.saldo += monto
+            cuenta.save()
+            
+            messages.success(request, f'¡Recarga exitosa! Se añadieron ${monto} a tu cuenta')
+            return redirect('panel')
+    
+    return render(request, 'core/recargar.html', {'cuenta': cuenta})
 ### 2.6 Panel de administración (admin.py)
-<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%;"><span></span><span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">django.contrib</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> admin
-<span style="color: #080; font-weight: bold">from</span><span style="color: #BBB"> </span><span style="color: #0E84B5; font-weight: bold">.models</span><span style="color: #BBB"> </span><span style="color: #080; font-weight: bold">import</span> Usuario, TipoCuenta, Cuenta, Transaccion, DetalleTransaccion
+from django.contrib import admin
+from .models import Usuario, TipoCuenta, Cuenta, Transaccion, DetalleTransaccion
 
-<span style="color: #555; font-weight: bold">@admin</span><span style="color: #333">.</span>register(Usuario)
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">UsuarioAdmin</span>(admin<span style="color: #333">.</span>ModelAdmin):
-    list_display <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;username&#39;</span>, <span style="background-color: #FFF0F0">&#39;email&#39;</span>, <span style="background-color: #FFF0F0">&#39;telefono&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha_registro&#39;</span>, <span style="background-color: #FFF0F0">&#39;activo&#39;</span>)
-    list_filter <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;is_active&#39;</span>, <span style="background-color: #FFF0F0">&#39;is_staff&#39;</span>, <span style="background-color: #FFF0F0">&#39;date_joined&#39;</span>)
-    search_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;username&#39;</span>, <span style="background-color: #FFF0F0">&#39;email&#39;</span>, <span style="background-color: #FFF0F0">&#39;telefono&#39;</span>)
-    readonly_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;id&#39;</span>, <span style="background-color: #FFF0F0">&#39;date_joined&#39;</span>, <span style="background-color: #FFF0F0">&#39;last_login&#39;</span>)
+@admin.register(Usuario)
+class UsuarioAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'telefono', 'fecha_registro', 'activo')
+    list_filter = ('is_active', 'is_staff', 'date_joined')
+    search_fields = ('username', 'email', 'telefono')
+    readonly_fields = ('id', 'date_joined', 'last_login')
     
-    fieldsets <span style="color: #333">=</span> (
-        (<span style="background-color: #FFF0F0">&#39;Información Personal&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;username&#39;</span>, <span style="background-color: #FFF0F0">&#39;email&#39;</span>, <span style="background-color: #FFF0F0">&#39;telefono&#39;</span>, <span style="background-color: #FFF0F0">&#39;direccion&#39;</span>, <span style="background-color: #FFF0F0">&#39;foto_perfil&#39;</span>)
+    fieldsets = (
+        ('Información Personal', {
+            'fields': ('username', 'email', 'telefono', 'direccion', 'foto_perfil')
         }),
-        (<span style="background-color: #FFF0F0">&#39;Permisos&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;is_active&#39;</span>, <span style="background-color: #FFF0F0">&#39;is_staff&#39;</span>, <span style="background-color: #FFF0F0">&#39;is_superuser&#39;</span>, <span style="background-color: #FFF0F0">&#39;groups&#39;</span>, <span style="background-color: #FFF0F0">&#39;user_permissions&#39;</span>)
+        ('Permisos', {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
         }),
-        (<span style="background-color: #FFF0F0">&#39;Información del Sistema&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;id&#39;</span>, <span style="background-color: #FFF0F0">&#39;date_joined&#39;</span>, <span style="background-color: #FFF0F0">&#39;last_login&#39;</span>),
-            <span style="background-color: #FFF0F0">&#39;classes&#39;</span>: (<span style="background-color: #FFF0F0">&#39;collapse&#39;</span>,)
+        ('Información del Sistema', {
+            'fields': ('id', 'date_joined', 'last_login'),
+            'classes': ('collapse',)
         }),
     )
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">telefono</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> obj<span style="color: #333">.</span>telefono <span style="color: #000; font-weight: bold">or</span> <span style="background-color: #FFF0F0">&#39;No registrado&#39;</span>
-    telefono<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Teléfono&#39;</span>
+    def telefono(self, obj):
+        return obj.telefono or 'No registrado'
+    telefono.short_description = 'Teléfono'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">fecha_registro</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> obj<span style="color: #333">.</span>date_joined<span style="color: #333">.</span>strftime(<span style="background-color: #FFF0F0">&#39;</span><span style="background-color: #EEE">%d</span><span style="background-color: #FFF0F0">/%m/%Y %H:%M&#39;</span>)
-    fecha_registro<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Fecha de Registro&#39;</span>
+    def fecha_registro(self, obj):
+        return obj.date_joined.strftime('%d/%m/%Y %H:%M')
+    fecha_registro.short_description = 'Fecha de Registro'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">activo</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> obj<span style="color: #333">.</span>is_active
-    activo<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Activo&#39;</span>
-    activo<span style="color: #333">.</span>boolean <span style="color: #333">=</span> <span style="color: #080; font-weight: bold">True</span>
+    def activo(self, obj):
+        return obj.is_active
+    activo.short_description = 'Activo'
+    activo.boolean = True
 
-<span style="color: #555; font-weight: bold">@admin</span><span style="color: #333">.</span>register(TipoCuenta)
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">TipoCuentaAdmin</span>(admin<span style="color: #333">.</span>ModelAdmin):
-    list_display <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;nombre&#39;</span>, <span style="background-color: #FFF0F0">&#39;tasa_interes&#39;</span>, <span style="background-color: #FFF0F0">&#39;cuota_mensual&#39;</span>, <span style="background-color: #FFF0F0">&#39;descripcion_corta&#39;</span>)
-    search_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;nombre&#39;</span>, <span style="background-color: #FFF0F0">&#39;descripcion&#39;</span>)
-    readonly_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;id&#39;</span>,)
+@admin.register(TipoCuenta)
+class TipoCuentaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'tasa_interes', 'cuota_mensual', 'descripcion_corta')
+    search_fields = ('nombre', 'descripcion')
+    readonly_fields = ('id',)
     
-    fieldsets <span style="color: #333">=</span> (
-        (<span style="background-color: #FFF0F0">&#39;Información del Tipo de Cuenta&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;nombre&#39;</span>, <span style="background-color: #FFF0F0">&#39;descripcion&#39;</span>, <span style="background-color: #FFF0F0">&#39;tasa_interes&#39;</span>, <span style="background-color: #FFF0F0">&#39;cuota_mensual&#39;</span>)
+    fieldsets = (
+        ('Información del Tipo de Cuenta', {
+            'fields': ('nombre', 'descripcion', 'tasa_interes', 'cuota_mensual')
         }),
-        (<span style="background-color: #FFF0F0">&#39;Información del Sistema&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;id&#39;</span>,),
-            <span style="background-color: #FFF0F0">&#39;classes&#39;</span>: (<span style="background-color: #FFF0F0">&#39;collapse&#39;</span>,)
+        ('Información del Sistema', {
+            'fields': ('id',),
+            'classes': ('collapse',)
         }),
     )
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">nombre</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> obj<span style="color: #333">.</span>nombre
-    nombre<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Nombre del Tipo&#39;</span>
+    def nombre(self, obj):
+        return obj.nombre
+    nombre.short_description = 'Nombre del Tipo'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">tasa_interes</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>tasa_interes<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">%&quot;</span>
-    tasa_interes<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Tasa de Interés&#39;</span>
+    def tasa_interes(self, obj):
+        return f"{obj.tasa_interes}%"
+    tasa_interes.short_description = 'Tasa de Interés'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">cuota_mensual</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;$</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>cuota_mensual<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-    cuota_mensual<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Cuota Mensual&#39;</span>
+    def cuota_mensual(self, obj):
+        return f"${obj.cuota_mensual}"
+    cuota_mensual.short_description = 'Cuota Mensual'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">descripcion_corta</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> obj<span style="color: #333">.</span>descripcion[:<span style="color: #00D; font-weight: bold">50</span>] <span style="color: #333">+</span> <span style="background-color: #FFF0F0">&#39;...&#39;</span> <span style="color: #080; font-weight: bold">if</span> <span style="color: #007020">len</span>(obj<span style="color: #333">.</span>descripcion) <span style="color: #333">&gt;</span> <span style="color: #00D; font-weight: bold">50</span> <span style="color: #080; font-weight: bold">else</span> obj<span style="color: #333">.</span>descripcion
-    descripcion_corta<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Descripción&#39;</span>
+    def descripcion_corta(self, obj):
+        return obj.descripcion[:50] + '...' if len(obj.descripcion) > 50 else obj.descripcion
+    descripcion_corta.short_description = 'Descripción'
 
-<span style="color: #555; font-weight: bold">@admin</span><span style="color: #333">.</span>register(Cuenta)
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">CuentaAdmin</span>(admin<span style="color: #333">.</span>ModelAdmin):
-    list_display <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;numero_cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;propietario&#39;</span>, <span style="background-color: #FFF0F0">&#39;saldo&#39;</span>, <span style="background-color: #FFF0F0">&#39;estado&#39;</span>, <span style="background-color: #FFF0F0">&#39;tipos_cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha_creacion&#39;</span>)
-    list_filter <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;estado&#39;</span>, <span style="background-color: #FFF0F0">&#39;tipos_cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha_creacion&#39;</span>)
-    search_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;numero_cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;propietario__username&#39;</span>, <span style="background-color: #FFF0F0">&#39;propietario__email&#39;</span>)
-    filter_horizontal <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;tipos_cuenta&#39;</span>,)
-    readonly_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;id&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha_creacion&#39;</span>)
+@admin.register(Cuenta)
+class CuentaAdmin(admin.ModelAdmin):
+    list_display = ('numero_cuenta', 'propietario', 'saldo', 'estado', 'tipos_cuenta', 'fecha_creacion')
+    list_filter = ('estado', 'tipos_cuenta', 'fecha_creacion')
+    search_fields = ('numero_cuenta', 'propietario__username', 'propietario__email')
+    filter_horizontal = ('tipos_cuenta',)
+    readonly_fields = ('id', 'fecha_creacion')
     
-    fieldsets <span style="color: #333">=</span> (
-        (<span style="background-color: #FFF0F0">&#39;Información de la Cuenta&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;numero_cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;propietario&#39;</span>, <span style="background-color: #FFF0F0">&#39;tipos_cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;saldo&#39;</span>, <span style="background-color: #FFF0F0">&#39;estado&#39;</span>)
+    fieldsets = (
+        ('Información de la Cuenta', {
+            'fields': ('numero_cuenta', 'propietario', 'tipos_cuenta', 'saldo', 'estado')
         }),
-        (<span style="background-color: #FFF0F0">&#39;Información del Sistema&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;id&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha_creacion&#39;</span>),
-            <span style="background-color: #FFF0F0">&#39;classes&#39;</span>: (<span style="background-color: #FFF0F0">&#39;collapse&#39;</span>,),
+        ('Información del Sistema', {
+            'fields': ('id', 'fecha_creacion'),
+            'classes': ('collapse',),
         }),
     )
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">numero_cuenta</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> obj<span style="color: #333">.</span>numero_cuenta
-    numero_cuenta<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Número de Cuenta&#39;</span>
+    def numero_cuenta(self, obj):
+        return obj.numero_cuenta
+    numero_cuenta.short_description = 'Número de Cuenta'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">propietario</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>propietario<span style="color: #333">.</span>username<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0"> (</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>propietario<span style="color: #333">.</span>email<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">)&quot;</span>
-    propietario<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Propietario&#39;</span>
+    def propietario(self, obj):
+        return f"{obj.propietario.username} ({obj.propietario.email})"
+    propietario.short_description = 'Propietario'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">saldo</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;$</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>saldo<span style="background-color: #EEE">:</span><span style="background-color: #FFF0F0">,.2f</span><span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-    saldo<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Saldo Actual&#39;</span>
+    def saldo(self, obj):
+        return f"${obj.saldo:,.2f}"
+    saldo.short_description = 'Saldo Actual'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">estado</span>(<span style="color: #007020">self</span>, obj):
-        estados <span style="color: #333">=</span> {
-            <span style="background-color: #FFF0F0">&#39;activa&#39;</span>: <span style="background-color: #FFF0F0">&#39;Activa&#39;</span>,
-            <span style="background-color: #FFF0F0">&#39;bloqueada&#39;</span>: <span style="background-color: #FFF0F0">&#39;Bloqueada&#39;</span>,
-            <span style="background-color: #FFF0F0">&#39;cerrada&#39;</span>: <span style="background-color: #FFF0F0">&#39;Cerrada&#39;</span>
+    def estado(self, obj):
+        estados = {
+            'activa': 'Activa',
+            'bloqueada': 'Bloqueada',
+            'cerrada': 'Cerrada'
         }
-        <span style="color: #080; font-weight: bold">return</span> estados<span style="color: #333">.</span>get(obj<span style="color: #333">.</span>estado, obj<span style="color: #333">.</span>estado)
-    estado<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Estado&#39;</span>
+        return estados.get(obj.estado, obj.estado)
+    estado.short_description = 'Estado'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">tipos_cuenta</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">&#39;, &#39;</span><span style="color: #333">.</span>join([t<span style="color: #333">.</span>nombre <span style="color: #080; font-weight: bold">for</span> t <span style="color: #000; font-weight: bold">in</span> obj<span style="color: #333">.</span>tipos_cuenta<span style="color: #333">.</span>all()])
-    tipos_cuenta<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Tipos de Cuenta&#39;</span>
+    def tipos_cuenta(self, obj):
+        return ', '.join([t.nombre for t in obj.tipos_cuenta.all()])
+    tipos_cuenta.short_description = 'Tipos de Cuenta'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">fecha_creacion</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> obj<span style="color: #333">.</span>fecha_creacion<span style="color: #333">.</span>strftime(<span style="background-color: #FFF0F0">&#39;</span><span style="background-color: #EEE">%d</span><span style="background-color: #FFF0F0">/%m/%Y %H:%M&#39;</span>)
-    fecha_creacion<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Fecha de Creación&#39;</span>
+    def fecha_creacion(self, obj):
+        return obj.fecha_creacion.strftime('%d/%m/%Y %H:%M')
+    fecha_creacion.short_description = 'Fecha de Creación'
 
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">DetalleTransaccionInline</span>(admin<span style="color: #333">.</span>TabularInline):
-    model <span style="color: #333">=</span> DetalleTransaccion
-    extra <span style="color: #333">=</span> <span style="color: #00D; font-weight: bold">1</span>
-    readonly_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;id&#39;</span>,)
-    fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;monto&#39;</span>)
+class DetalleTransaccionInline(admin.TabularInline):
+    model = DetalleTransaccion
+    extra = 1
+    readonly_fields = ('id',)
+    fields = ('cuenta', 'monto')
 
-<span style="color: #555; font-weight: bold">@admin</span><span style="color: #333">.</span>register(Transaccion)
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">TransaccionAdmin</span>(admin<span style="color: #333">.</span>ModelAdmin):
-    list_display <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;id_corto&#39;</span>, <span style="background-color: #FFF0F0">&#39;tipo_transaccion&#39;</span>, <span style="background-color: #FFF0F0">&#39;cliente&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha&#39;</span>, <span style="background-color: #FFF0F0">&#39;monto_total&#39;</span>)
-    list_filter <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;tipo_transaccion&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha&#39;</span>, <span style="background-color: #FFF0F0">&#39;usuario&#39;</span>)
-    search_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;usuario__username&#39;</span>, <span style="background-color: #FFF0F0">&#39;usuario__email&#39;</span>, <span style="background-color: #FFF0F0">&#39;descripcion&#39;</span>)
-    readonly_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;id&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha&#39;</span>)
-    inlines <span style="color: #333">=</span> [DetalleTransaccionInline]
+@admin.register(Transaccion)
+class TransaccionAdmin(admin.ModelAdmin):
+    list_display = ('id_corto', 'tipo_transaccion', 'cliente', 'fecha', 'monto_total')
+    list_filter = ('tipo_transaccion', 'fecha', 'usuario')
+    search_fields = ('usuario__username', 'usuario__email', 'descripcion')
+    readonly_fields = ('id', 'fecha')
+    inlines = [DetalleTransaccionInline]
     
-    fieldsets <span style="color: #333">=</span> (
-        (<span style="background-color: #FFF0F0">&#39;Información de la Transacción&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;tipo_transaccion&#39;</span>, <span style="background-color: #FFF0F0">&#39;usuario&#39;</span>, <span style="background-color: #FFF0F0">&#39;descripcion&#39;</span>)
+    fieldsets = (
+        ('Información de la Transacción', {
+            'fields': ('tipo_transaccion', 'usuario', 'descripcion')
         }),
-        (<span style="background-color: #FFF0F0">&#39;Información del Sistema&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;id&#39;</span>, <span style="background-color: #FFF0F0">&#39;fecha&#39;</span>),
-            <span style="background-color: #FFF0F0">&#39;classes&#39;</span>: (<span style="background-color: #FFF0F0">&#39;collapse&#39;</span>,),
+        ('Información del Sistema', {
+            'fields': ('id', 'fecha'),
+            'classes': ('collapse',),
         }),
     )
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">id_corto</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="color: #007020">str</span>(obj<span style="color: #333">.</span>id)<span style="color: #333">.</span>split(<span style="background-color: #FFF0F0">&#39;-&#39;</span>)[<span style="color: #00D; font-weight: bold">0</span>]
-    id_corto<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;ID&#39;</span>
+    def id_corto(self, obj):
+        return str(obj.id).split('-')[0]
+    id_corto.short_description = 'ID'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">tipo_transaccion</span>(<span style="color: #007020">self</span>, obj):
-        tipos <span style="color: #333">=</span> {
-            <span style="background-color: #FFF0F0">&#39;deposito&#39;</span>: <span style="background-color: #FFF0F0">&#39;Depósito&#39;</span>,
-            <span style="background-color: #FFF0F0">&#39;retiro&#39;</span>: <span style="background-color: #FFF0F0">&#39;Retiro&#39;</span>,
-            <span style="background-color: #FFF0F0">&#39;transferencia&#39;</span>: <span style="background-color: #FFF0F0">&#39;Transferencia&#39;</span>,
-            <span style="background-color: #FFF0F0">&#39;pago&#39;</span>: <span style="background-color: #FFF0F0">&#39;Pago&#39;</span>
+    def tipo_transaccion(self, obj):
+        tipos = {
+            'deposito': 'Depósito',
+            'retiro': 'Retiro',
+            'transferencia': 'Transferencia',
+            'pago': 'Pago'
         }
-        <span style="color: #080; font-weight: bold">return</span> tipos<span style="color: #333">.</span>get(obj<span style="color: #333">.</span>tipo_transaccion, obj<span style="color: #333">.</span>tipo_transaccion)
-    tipo_transaccion<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Tipo de Transacción&#39;</span>
+        return tipos.get(obj.tipo_transaccion, obj.tipo_transaccion)
+    tipo_transaccion.short_description = 'Tipo de Transacción'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">cliente</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>usuario<span style="color: #333">.</span>username<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0"> (</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>usuario<span style="color: #333">.</span>email<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">)&quot;</span>
-    cliente<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Cliente&#39;</span>
+    def cliente(self, obj):
+        return f"{obj.usuario.username} ({obj.usuario.email})"
+    cliente.short_description = 'Cliente'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">fecha</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> obj<span style="color: #333">.</span>fecha<span style="color: #333">.</span>strftime(<span style="background-color: #FFF0F0">&#39;</span><span style="background-color: #EEE">%d</span><span style="background-color: #FFF0F0">/%m/%Y %H:%M:%S&#39;</span>)
-    fecha<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Fecha y Hora&#39;</span>
+    def fecha(self, obj):
+        return obj.fecha.strftime('%d/%m/%Y %H:%M:%S')
+    fecha.short_description = 'Fecha y Hora'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">monto_total</span>(<span style="color: #007020">self</span>, obj):
-        total <span style="color: #333">=</span> <span style="color: #007020">sum</span>(detalle<span style="color: #333">.</span>monto <span style="color: #080; font-weight: bold">for</span> detalle <span style="color: #000; font-weight: bold">in</span> obj<span style="color: #333">.</span>detalletransaccion_set<span style="color: #333">.</span>all())
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;$</span><span style="background-color: #EEE">{</span><span style="color: #007020">abs</span>(total)<span style="background-color: #EEE">:</span><span style="background-color: #FFF0F0">,.2f</span><span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-    monto_total<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Monto Total&#39;</span>
+    def monto_total(self, obj):
+        total = sum(detalle.monto for detalle in obj.detalletransaccion_set.all())
+        return f"${abs(total):,.2f}"
+    monto_total.short_description = 'Monto Total'
 
-<span style="color: #555; font-weight: bold">@admin</span><span style="color: #333">.</span>register(DetalleTransaccion)
-<span style="color: #080; font-weight: bold">class</span><span style="color: #BBB"> </span><span style="color: #B06; font-weight: bold">DetalleTransaccionAdmin</span>(admin<span style="color: #333">.</span>ModelAdmin):
-    list_display <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;transaccion_id&#39;</span>, <span style="background-color: #FFF0F0">&#39;cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;monto&#39;</span>, <span style="background-color: #FFF0F0">&#39;monto_absoluto&#39;</span>)
-    list_filter <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;transaccion__tipo_transaccion&#39;</span>, <span style="background-color: #FFF0F0">&#39;cuenta__estado&#39;</span>)
-    search_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;transaccion__id&#39;</span>, <span style="background-color: #FFF0F0">&#39;cuenta__numero_cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;cuenta__propietario__username&#39;</span>)
-    readonly_fields <span style="color: #333">=</span> (<span style="background-color: #FFF0F0">&#39;id&#39;</span>,)
+@admin.register(DetalleTransaccion)
+class DetalleTransaccionAdmin(admin.ModelAdmin):
+    list_display = ('transaccion_id', 'cuenta', 'monto', 'monto_absoluto')
+    list_filter = ('transaccion__tipo_transaccion', 'cuenta__estado')
+    search_fields = ('transaccion__id', 'cuenta__numero_cuenta', 'cuenta__propietario__username')
+    readonly_fields = ('id',)
     
-    fieldsets <span style="color: #333">=</span> (
-        (<span style="background-color: #FFF0F0">&#39;Información del Detalle&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;transaccion&#39;</span>, <span style="background-color: #FFF0F0">&#39;cuenta&#39;</span>, <span style="background-color: #FFF0F0">&#39;monto&#39;</span>)
+    fieldsets = (
+        ('Información del Detalle', {
+            'fields': ('transaccion', 'cuenta', 'monto')
         }),
-        (<span style="background-color: #FFF0F0">&#39;Información del Sistema&#39;</span>, {
-            <span style="background-color: #FFF0F0">&#39;fields&#39;</span>: (<span style="background-color: #FFF0F0">&#39;id&#39;</span>,),
-            <span style="background-color: #FFF0F0">&#39;classes&#39;</span>: (<span style="background-color: #FFF0F0">&#39;collapse&#39;</span>,),
+        ('Información del Sistema', {
+            'fields': ('id',),
+            'classes': ('collapse',),
         }),
     )
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">transaccion_id</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="color: #007020">str</span>(obj<span style="color: #333">.</span>transaccion<span style="color: #333">.</span>id)<span style="color: #333">.</span>split(<span style="background-color: #FFF0F0">&#39;-&#39;</span>)[<span style="color: #00D; font-weight: bold">0</span>]
-    transaccion_id<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;ID Transacción&#39;</span>
+    def transaccion_id(self, obj):
+        return str(obj.transaccion.id).split('-')[0]
+    transaccion_id.short_description = 'ID Transacción'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">cuenta</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>cuenta<span style="color: #333">.</span>numero_cuenta<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0"> (</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>cuenta<span style="color: #333">.</span>propietario<span style="color: #333">.</span>username<span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">)&quot;</span>
-    cuenta<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Cuenta&#39;</span>
+    def cuenta(self, obj):
+        return f"{obj.cuenta.numero_cuenta} ({obj.cuenta.propietario.username})"
+    cuenta.short_description = 'Cuenta'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">monto</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">if</span> obj<span style="color: #333">.</span>monto <span style="color: #333">&lt;</span> <span style="color: #00D; font-weight: bold">0</span>:
-            <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;-$</span><span style="background-color: #EEE">{</span><span style="color: #007020">abs</span>(obj<span style="color: #333">.</span>monto)<span style="background-color: #EEE">:</span><span style="background-color: #FFF0F0">,.2f</span><span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;+$</span><span style="background-color: #EEE">{</span>obj<span style="color: #333">.</span>monto<span style="background-color: #EEE">:</span><span style="background-color: #FFF0F0">,.2f</span><span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-    monto<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Monto&#39;</span>
+    def monto(self, obj):
+        if obj.monto < 0:
+            return f"-${abs(obj.monto):,.2f}"
+        return f"+${obj.monto:,.2f}"
+    monto.short_description = 'Monto'
     
-    <span style="color: #080; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #06B; font-weight: bold">monto_absoluto</span>(<span style="color: #007020">self</span>, obj):
-        <span style="color: #080; font-weight: bold">return</span> <span style="background-color: #FFF0F0">f&quot;$</span><span style="background-color: #EEE">{</span><span style="color: #007020">abs</span>(obj<span style="color: #333">.</span>monto)<span style="background-color: #EEE">:</span><span style="background-color: #FFF0F0">,.2f</span><span style="background-color: #EEE">}</span><span style="background-color: #FFF0F0">&quot;</span>
-    monto_absoluto<span style="color: #333">.</span>short_description <span style="color: #333">=</span> <span style="background-color: #FFF0F0">&#39;Monto Absoluto&#39;</span>
-</pre></div>
-
+    def monto_absoluto(self, obj):
+        return f"${abs(obj.monto):,.2f}"
+    monto_absoluto.short_description = 'Monto Absoluto'
 ### 2.7 Plantillas (templates)
 
 Se desarrollaron **9 plantillas HTML** con CSS puro:
