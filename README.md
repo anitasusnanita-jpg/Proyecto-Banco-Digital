@@ -1,14 +1,14 @@
-```markdown
-![Texto alternativo](https://github.com/user-attachments/assets/6965211b-8ccd-4084-9759-f2c92697f52c" />
-)
+
+<img width="148" height="148" alt="image" src="https://github.com/user-attachments/assets/bf102f7c-bc5a-4ab6-8baf-9b9a668869f6" />
+
 # 🏦 BANCO DIGITAL - SISTEMA BANCARIO CON DJANGO
 
-**Nombre del Proyecto:** Sistema Bancario  
-**Materia:** Implementa Base De Datos Relaciones En Sistema de Información  
-**Profesor:** Romero Hernandez Jose Christian  
-**Fecha de Entrega:** Jueves 28 de Mayo del 2026  
+Nombre del Proyecto: Sistema Bancario  
+Materia: Implementa Base De Datos Relaciones En Sistema de Información  
+Profesor: Romero Hernandez Jose Christian  
+Fecha de Entrega: Jueves 28 de Mayo del 2026  
 
-**Integrantes:**  
+Integrantes: 
 - Arista Flores Karla Gissel  
 - Arrez Guzman Eikoo Mizrrain  
 - Gonzalez Limon Kimberly  
@@ -16,12 +16,12 @@
 - Reynosa Duran Esmeralda  
 - Medina Alatorre Guillermo Esteban  
 
----
 
-## 📋 ÍNDICE
 
-1. [Introducción](#1-introducción)
-2. [Desarrollo](#2-desarrollo)
+📋 ÍNDICE
+
+1. Instruccion
+2. Desarrollo
    - 2.1 Configuración del proyecto (settings.py)
    - 2.2 Modelos y relaciones (models.py)
    - 2.3 URLs (urls.py)
@@ -31,29 +31,29 @@
    - 2.7 Plantillas (templates)
    - 2.8 CRUD en el panel de administración
    - 2.9 Integración de componentes (algoritmo)
-3. [Sprints del desarrollo](#3-sprints-del-desarrollo)
-4. [Conclusiones](#4-conclusiones)
+3. Sprints del desarrollo
+4. Conclusiones
 
----
 
-## 1. INTRODUCCIÓN
 
-### 1.1 Contexto del proyecto
+1. INTRODUCCIÓN
 
-**Banco Digital** es una aplicación web desarrollada con el framework Django 5 que simula las operaciones fundamentales de un sistema bancario moderno. Este proyecto nace como una solución tecnológica para demostrar cómo las aplicaciones web pueden gestionar información financiera de forma segura, eficiente y escalable, utilizando bases de datos relacionales y buenas prácticas de desarrollo.
+ 1.1 Contexto del proyecto
+
+Banco Digital es una aplicación web desarrollada con el framework Django 5 que simula las operaciones fundamentales de un sistema bancario moderno. Este proyecto nace como una solución tecnológica para demostrar cómo las aplicaciones web pueden gestionar información financiera de forma segura, eficiente y escalable, utilizando bases de datos relacionales y buenas prácticas de desarrollo.
 
 En la actualidad, los sistemas bancarios en línea son una necesidad fundamental para los usuarios que buscan comodidad, rapidez y seguridad en la gestión de su dinero. Este proyecto emula esas funcionalidades principales, permitiendo a los usuarios realizar operaciones bancarias básicas sin necesidad de acudir a una sucursal física. Es ideal como proyecto de portafolio, base para productos reales o material educativo sobre Django.
 
-### 1.2 Objetivos del sistema
+ 1.2 Objetivos del sistema
 
-- **Gestionar usuarios**: Permitir el registro, autenticación y administración de clientes bancarios con información personal y foto de perfil.
-- **Administrar cuentas bancarias**: Facilitar la creación, consulta y gestión de cuentas con diferentes tipos (Ahorro, Corriente, Nómina, Inversión).
-- **Realizar transferencias**: Implementar un sistema de transferencias entre cuentas con validaciones de saldo y seguridad.
-- **Recargar saldo**: Ofrecer una opción sencilla para que los usuarios puedan añadir fondos a sus cuentas.
-- **Visualizar movimientos**: Mostrar un historial claro y actualizado de todas las transacciones realizadas.
-- **Demostrar relaciones complejas**: Implementar relaciones uno a muchos (1:N) y muchos a muchos (N:M) en una base de datos relacional.
+- Gestionar usuarios: Permitir el registro, autenticación y administración de clientes bancarios con información personal y foto de perfil.
+- Administrar cuentas bancarias: Facilitar la creación, consulta y gestión de cuentas con diferentes tipos (Ahorro, Corriente, Nómina, Inversión).
+- Realizar transferencias: Implementar un sistema de transferencias entre cuentas con validaciones de saldo y seguridad.
+- Recargar saldo: Ofrecer una opción sencilla para que los usuarios puedan añadir fondos a sus cuentas.
+- Visualizar movimientos: Mostrar un historial claro y actualizado de todas las transacciones realizadas.
+- Demostrar relaciones complejas: Implementar relaciones uno a muchos (1:N) y muchos a muchos (N:M) en una base de datos relacional.
 
-### 1.3 Funcionalidades principales
+1.3 Funcionalidades principales
 
 - Registrarse con foto de perfil (credencial bancaria)
 - Iniciar y cerrar sesión de forma segura
@@ -64,7 +64,7 @@ En la actualidad, los sistemas bancarios en línea son una necesidad fundamental
 - Editar perfil (datos personales y foto)
 - Explorar cuentas públicas con búsqueda, filtros y paginación
 
-### 1.4 Arquitectura técnica
+ 1.4 Arquitectura técnica
 
 | Tecnología | Versión | Propósito |
 |------------|---------|-----------|
@@ -74,7 +74,7 @@ En la actualidad, los sistemas bancarios en línea son una necesidad fundamental
 | Pillow | 10.3+ | Manejo de imágenes |
 | HTML5/CSS3 | - | Interfaz de usuario (CSS puro) |
 
-### 1.5 Estructura del proyecto
+ 1.5 Estructura del proyecto
 
 
 Banco Digital/
@@ -99,9 +99,9 @@ Banco Digital/
 │       └── recargar.html
 ├── media/
 └── db.sqlite3
-```
 
-### 1.6 Relaciones de base de datos implementadas
+
+ 1.6 Relaciones de base de datos implementadas
 
 | Relación | Tipo | Explicación |
 |----------|------|-------------|
@@ -109,27 +109,26 @@ Banco Digital/
 | Cuenta ↔ TipoCuenta | N:M | Una cuenta tiene varios tipos |
 | Transacción ↔ Cuenta | N:M (vía DetalleTransaccion) | Una transferencia involucra dos cuentas |
 
-### 1.7 Panel de administración
+ 1.7 Panel de administración
 
 El sistema incluye un panel `/admin/` personalizado en español que permite:
 - CRUD completo de usuarios, cuentas, tipos de cuenta, transacciones
 - Filtros y búsqueda avanzada
 - Gestión de permisos
 
-### 1.8 Alcance y limitaciones
+ 1.8 Alcance y limitaciones
 
-**Alcance:** Funciona localmente, soporta múltiples usuarios, operaciones en tiempo real.  
-**Limitaciones:** Sin pasarelas de pago reales, sin notificaciones, seguridad básica.
+Alcance: Funciona localmente, soporta múltiples usuarios, operaciones en tiempo real.  
+Limitaciones: Sin pasarelas de pago reales, sin notificaciones, seguridad básica.
 
-### 1.9 Público objetivo
+ 1.9 Público objetivo
 
 Desarrolladores web, instituciones educativas, pequeñas empresas.
 
----
 
-## 2. DESARROLLO
+2. DESARROLLO
 
-### 2.1 Configuración del proyecto (settings.py)
+ 2.1 Configuración del proyecto (settings.py)
 
 ```python
 INSTALLED_APPS = [
@@ -142,8 +141,8 @@ INSTALLED_APPS = [
     'core',
 ]
 ```
-### 2.2 Modelos y relaciones (models.py)
-
+ 2.2 Modelos y relaciones (models.py)
+```python
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -245,12 +244,13 @@ class DetalleTransaccion(models.Model):
 
     def __str__(self):
         return f"{self.transaccion.id} - {self.cuenta.numero_cuenta}: ${self.monto}"
-
+```
 ![Diagrama ER](https://github.com/user-attachments/assets/640c59b7-4889-4922-a5a5-9f1144cf89d9)
 
-### 2.3 URLs (urls.py)
+ 2.3 URLs (urls.py)
 
 **Banco/urls.py:**
+```python
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -261,9 +261,10 @@ urlpatterns = [
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+```
 
 **Core/urls.py:**
+```python
 from django.urls import path
 from . import views  
 urlpatterns = [
@@ -277,9 +278,9 @@ urlpatterns = [
     path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
     path('recargar/<uuid:cuenta_id>/', views.recargar_saldo, name='recargar'),
 ]
-
-### 2.4 Formularios (forms.py)
-
+```
+ 2.4 Formularios (forms.py)
+```python
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Usuario, Cuenta
@@ -303,9 +304,10 @@ class FormularioActualizarUsuario(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ('username', 'email', 'telefono', 'direccion', 'foto_perfil')
+```
 
-
-### 2.5 Vistas (views.py)
+ 2.5 Vistas (views.py)
+```python
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -496,7 +498,9 @@ def recargar_saldo(request, cuenta_id):
             return redirect('panel')
     
     return render(request, 'core/recargar.html', {'cuenta': cuenta})
-### 2.6 Panel de administración (admin.py)
+```
+ 2.6 Panel de administración (admin.py)
+```python
 from django.contrib import admin
 from .models import Usuario, TipoCuenta, Cuenta, Transaccion, DetalleTransaccion
 
@@ -697,9 +701,10 @@ class DetalleTransaccionAdmin(admin.ModelAdmin):
     def monto_absoluto(self, obj):
         return f"${abs(obj.monto):,.2f}"
     monto_absoluto.short_description = 'Monto Absoluto'
-### 2.7 Plantillas (templates)
+```
+ 2.7 Plantillas (templates)
 
-Se desarrollaron **9 plantillas HTML** con CSS puro:
+Se desarrollaron 9 plantillas HTML con CSS puro:
 
 | # | Template | Función |
 |---|----------|---------|
@@ -713,14 +718,14 @@ Se desarrollaron **9 plantillas HTML** con CSS puro:
 | 8 | `editar_perfil.html` | Formulario de edición de perfil |
 | 9 | `recargar.html` | Formulario de recarga de saldo |
 
-### 2.8 CRUD en el panel de administración
+ 2.8 CRUD en el panel de administración
 
-- **Crear:** Usuarios, tipos de cuenta, cuentas, transacciones
-- **Leer:** Listados con filtros y búsqueda
-- **Actualizar:** Edición de cualquier campo
-- **Eliminar:** Borrado con confirmación y cascada
+- Crear: Usuarios, tipos de cuenta, cuentas, transacciones
+- Leer: Listados con filtros y búsqueda
+- Actualizar: Edición de cualquier campo
+- Eliminar: Borrado con confirmación y cascada
 
-### 2.9 Integración de componentes (algoritmo)
+ 2.9 Integración de componentes (algoritmo)
 
 ```
 ALGORITMO DEL BANCO DIGITAL
@@ -738,9 +743,9 @@ Ejemplo transferencia:
 URL /transferencia/ → views.realizar_transferencia() → valida datos → crea Transaccion y DetalleTransaccion → actualiza saldos → redirige a panel.html
 ```
 
-## 3. SPRINTS DEL DESARROLLO
+ 3. SPRINTS DEL DESARROLLO
 
-### 🚀 SPRINT 1 — Setup + Modelado Base
+🚀 SPRINT 1 — Setup + Modelado Base
 
 **Objetivo:**
 - Proyecto Django funcionando
@@ -762,7 +767,7 @@ URL /transferencia/ → views.realizar_transferencia() → valida datos → crea
 | Cuenta ↔ TipoCuenta | N:M |
 | Transacción ↔ Cuenta | N:M (vía DetalleTransaccion) |
 
-### 🚀 SPRINT 2 — Autenticación + UI Base
+ 🚀 SPRINT 2 — Autenticación + UI Base
 
 **Objetivo:**
 - Sistema de registro y login
@@ -772,7 +777,7 @@ URL /transferencia/ → views.realizar_transferencia() → valida datos → crea
 
 **Templates creados:** base.html, inicio.html, registro.html, iniciar_sesion.html
 
-### 🚀 SPRINT 3 — Gestión de Cuentas + Dashboard
+🚀 SPRINT 3 — Gestión de Cuentas + Dashboard
 
 **Objetivo:**
 - CRUD de cuentas bancarias
@@ -818,9 +823,9 @@ URL /transferencia/ → views.realizar_transferencia() → valida datos → crea
 - Paginación (6 cuentas por página)
 - Optimización ORM (select_related, prefetch_related)
 
----
 
-## 📁 LISTA COMPLETA DE TEMPLATES (9 archivos)
+
+ 📁 LISTA COMPLETA DE TEMPLATES (9 archivos)
 
 ```
 core/templates/core/
@@ -883,7 +888,7 @@ python manage.py runserver
 | 5 | Optimización + Recarga | 2 | editar_perfil, recargar |
 | **Total** | | **9** | **Sistema completo** |
 
----
+
 
  4. CONCLUSIONES
 
