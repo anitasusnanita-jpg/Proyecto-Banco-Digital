@@ -31,8 +31,8 @@ Integrantes:
    - 2.7 Plantillas (templates)
    - 2.8 CRUD en el panel de administración
    - 2.9 Integración de componentes (algoritmo)
-3. Sprints del desarrollo
-4. Conclusiones
+     
+3. Conclusiones
 
 
 
@@ -721,9 +721,64 @@ Se desarrollaron 9 plantillas HTML con CSS puro:
  2.8 CRUD en el panel de administración
 
 - Crear: Usuarios, tipos de cuenta, cuentas, transacciones
+  Admin:
+Crear usuarios nuevos con nombre, email, teléfono, dirección, foto de perfil, contraseña y permisos (activo, staff, superusuario)
+Crear tipos de cuenta (Ahorro, Corriente, Nómina, Inversión) con nombre, descripción, tasa de interés y cuota mensual
+Crear cuentas bancarias asignando número de cuenta, propietario, tipos de cuenta, saldo inicial y estado
+Crear transacciones manualmente seleccionando tipo (depósito/retiro/transferencia/pago), usuario y descripción, y agregando detalles con cuenta y monto
+<img width="764" height="378" alt="image" src="https://github.com/user-attachments/assets/b9226e5a-da3d-43bc-a19c-7fa07520e597" />
+<img width="745" height="399" alt="image" src="https://github.com/user-attachments/assets/7fedfc2a-21f7-439f-8de1-65802aa33e32" />
+<img width="743" height="404" alt="image" src="https://github.com/user-attachments/assets/564e9571-d647-4dfc-bb74-d9e64f4f9011" />
+<img width="756" height="450" alt="image" src="https://github.com/user-attachments/assets/e206e56b-4638-4564-8acc-f4e789df84ae" />
+Aplicación:
+Registrarse como nuevo usuario en /registro/ con nombre, email, teléfono, foto de perfil y contraseña
+Crear nueva cuenta bancaria en /cuenta/crear/ con número de cuenta y selección de tipos (Ahorro, Corriente, Nómina, Inversión)
+<img width="743" height="411" alt="image" src="https://github.com/user-attachments/assets/5a9818f0-d0e3-4e97-9ba4-2e92aee37674" />
+
 - Leer: Listados con filtros y búsqueda
+  Admin:
+Ver listado completo de usuarios con columnas: nombre, email, teléfono, fecha registro y si está activo
+Ver listado de tipos de cuenta con nombre, tasa de interés y cuota mensual
+Ver listado de cuentas con número, propietario, saldo, estado, tipos de cuenta y fecha creación
+Ver listado de transacciones con ID, tipo, cliente, fecha y monto total
+Ver listado de detalles con ID de transacción, cuenta involucrada y monto
+Filtrar listados por estado, tipo de cuenta, fecha, tipo de transacción
+Buscar por número de cuenta, nombre de usuario, email o descripción
+<img width="758" height="349" alt="image" src="https://github.com/user-attachments/assets/01d6c4e6-9889-49fb-ab23-72496a40e97f" />
+<img width="745" height="423" alt="image" src="https://github.com/user-attachments/assets/39544312-4577-4f2e-873b-b324a81037fa" />
+<img width="722" height="513" alt="image" src="https://github.com/user-attachments/assets/459450f7-3ea5-4625-9c59-64a3df8da8bc" />
+<img width="737" height="386" alt="image" src="https://github.com/user-attachments/assets/9ec504ad-e933-4aff-965a-52701c299c38" />
+Aplicación:
+Ver listado público de cuentas en / con número, saldo, titular y tipos, más búsqueda, filtros y paginación
+Ver dashboard personal en /panel/ con credencial bancaria (foto, nombre, email, teléfono, ID, fecha registro), saldo total de todas sus cuentas, listado de sus cuentas (número, tipos, saldo, estado) y últimos 5 movimientos (fecha, tipo, descripción)
+<img width="749" height="403" alt="image" src="https://github.com/user-attachments/assets/eb69eedf-65bf-45de-a91b-7d38d642c246" />
+<img width="749" height="392" alt="image" src="https://github.com/user-attachments/assets/7608fe92-1622-420e-82a3-52d334c41386" />
+
 - Actualizar: Edición de cualquier campo
+  Admin:
+Editar usuarios: cambiar nombre, email, teléfono, dirección, foto de perfil, contraseña y permisos
+Editar tipos de cuenta: modificar nombre, descripción, tasa de interés y cuota mensual
+Editar cuentas: cambiar número de cuenta, propietario, tipos de cuenta, saldo y estado
+Editar transacciones: modificar tipo, usuario y descripción
+Editar detalles: cambiar cuenta y monto de una transacción
+<img width="673" height="224" alt="image" src="https://github.com/user-attachments/assets/166f5774-0cad-417f-87f0-814914a17e71" />
+Aplicacion:
+Editar su perfil en /perfil/editar/ para cambiar nombre de usuario, email, teléfono, dirección y foto de perfil
+Recargar saldo en /recargar/<id_cuenta>/ ingresando un monto para aumentar el saldo de una cuenta específica
+Realizar transferencias en /transferencia/ seleccionando cuenta origen, escribiendo cuenta destino y monto, con validaciones de saldo suficiente y cuenta existente
+<img width="608" height="490" alt="image" src="https://github.com/user-attachments/assets/8e097bf7-0f5b-46c5-9054-88e849b70aaf" />
+<img width="376" height="473" alt="image" src="https://github.com/user-attachments/assets/f6360e1f-71b3-4b65-a4ac-c9a338120f66" />
+<img width="673" height="102" alt="image" src="https://github.com/user-attachments/assets/433fc415-ef07-4d81-8f9d-6c72bde6d476" />
+
 - Eliminar: Borrado con confirmación y cascada
+Admin:
+ Eliminar usuarios (borra en cascada todas sus cuentas y transacciones)
+Eliminar tipos de cuenta (los desvincula de todas las cuentas que lo tenían)
+Eliminar cuentas (borra en cascada sus detalles de transacciones)
+Eliminar transacciones (borra en cascada sus detalles)
+Eliminar detalles individuales
+Siempre pide confirmación antes de eliminar
+<img width="677" height="380" alt="image" src="https://github.com/user-attachments/assets/a29bbad8-3af8-447d-9e2a-277e43378d34" />
 
  2.9 Integración de componentes (algoritmo)
 
@@ -741,156 +796,9 @@ PASO 8: Flujo de petición → URL → Vista → Modelo → Template → Respues
 
 Ejemplo transferencia:
 URL /transferencia/ → views.realizar_transferencia() → valida datos → crea Transaccion y DetalleTransaccion → actualiza saldos → redirige a panel.html
-```
-
- 3. SPRINTS DEL DESARROLLO
-
-🚀 SPRINT 1 — Setup + Modelado Base
-
-**Objetivo:**
-- Proyecto Django funcionando
-- App core (banco)
-- Modelos con relaciones 1:N y N:M
-- Admin operativo
-
-**Modelos creados:**
-- `Usuario` (con foto_perfil, teléfono, dirección)
-- `TipoCuenta` (nombre, tasa_interés, cuota_mensual)
-- `Cuenta` (numero_cuenta, saldo, estado)
-- `Transaccion` (tipo, descripción, fecha)
-- `DetalleTransaccion` (monto, tabla intermedia)
-
-**Relaciones implementadas:**
-| Relación | Tipo |
-|----------|------|
-| Usuario → Cuenta | 1:N |
-| Cuenta ↔ TipoCuenta | N:M |
-| Transacción ↔ Cuenta | N:M (vía DetalleTransaccion) |
-
- 🚀 SPRINT 2 — Autenticación + UI Base
-
-**Objetivo:**
-- Sistema de registro y login
-- Layout base con CSS puro
-- Navbar dinámica
-- Home pública
-
-**Templates creados:** base.html, inicio.html, registro.html, iniciar_sesion.html
-
-🚀 SPRINT 3 — Gestión de Cuentas + Dashboard
-
-**Objetivo:**
-- CRUD de cuentas bancarias
-- Dashboard personal para clientes
-- Control de permisos
-
-**Templates creados:** panel.html, crear_cuenta.html
-
-**Dashboard features:**
-- Credencial bancaria con foto de perfil
-- Saldo total de todas las cuentas
-- Listado de cuentas del usuario
-- Últimos movimientos recientes
-
-### 🚀 SPRINT 4 — Transferencias + Movimientos
-
-**Objetivo:**
-- Sistema de transferencias entre cuentas
-- Validación de saldo suficiente
-- Registro de transacciones
-
-**Template creado:** transferencia.html
-
-**Lógica de transferencia:**
-- Monto mayor a cero
-- Saldo suficiente
-- Cuenta destino existe
-- No transferir a misma cuenta
-
-### 🚀 SPRINT 5 — Optimización + UX + Recarga + Edición
-
-**Objetivo:**
-- Búsqueda y filtros
-- Paginación
-- Edición de perfil
-- Recarga de saldo desde página web
-
-**Templates creados:** editar_perfil.html, recargar.html
-
-**Mejoras implementadas:**
-- Búsqueda con Q
-- Filtros por tipo de cuenta
-- Paginación (6 cuentas por página)
-- Optimización ORM (select_related, prefetch_related)
 
 
-
- 📁 LISTA COMPLETA DE TEMPLATES (9 archivos)
-
-```
-core/templates/core/
-├── base.html           # Plantilla base con navegación y estilos
-├── inicio.html         # Listado público de cuentas
-├── registro.html       # Formulario de registro
-├── iniciar_sesion.html # Formulario de login
-├── panel.html          # Dashboard del usuario
-├── crear_cuenta.html   # Formulario para crear cuenta
-├── transferencia.html  # Formulario para transferir
-├── editar_perfil.html  # Formulario para editar perfil
-└── recargar.html       # Formulario para recargar saldo
-```
-
-## 📊 Diagrama de Relaciones
-
-```
-Usuario (1) ──────→ (N) Cuenta
-                       │
-                       │ (N:M)
-                       ↓
-                 TipoCuenta
-
-Transacción (N) ←──→ (N) Cuenta (a través de DetalleTransaccion)
-```
-
-## 📦 Instalación rápida
-
-```bash
-git clone https://github.com/anitasusnanita-jpg/Proyecto-Banco-Digital.git
-cd Proyecto-Banco-Digital
-python -m venv venv
-venv\Scripts\activate
-pip install django pillow
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
-
-## 🧪 Flujo de prueba completo
-
-| Paso | Acción | Template involucrado |
-|------|--------|---------------------|
-| 1 | `/registro/` | registro.html |
-| 2 | `/admin/` | (admin de Django) |
-| 3 | `/cuenta/crear/` | crear_cuenta.html |
-| 4 | `/panel/` | panel.html |
-| 5 | Click en "Recargar" | recargar.html |
-| 6 | `/transferencia/` | transferencia.html |
-| 7 | `/perfil/editar/` | editar_perfil.html |
-
-## ✅ Resumen de Sprints
-
-| Sprint | Nombre | Templates | Entregables |
-|--------|--------|-----------|-------------|
-| 1 | Setup + Modelado Base | 0 | Modelos 1:N y N:M |
-| 2 | Autenticación + UI Base | 4 | base, inicio, registro, login |
-| 3 | Gestión de Cuentas | 2 | panel, crear_cuenta |
-| 4 | Transferencias | 1 | transferencia |
-| 5 | Optimización + Recarga | 2 | editar_perfil, recargar |
-| **Total** | | **9** | **Sistema completo** |
-
-
-
- 4. CONCLUSIONES
+ 3. CONCLUSIONES
 
 El desarrollo de **Banco Digital** ha demostrado ser un ejercicio completo y exitoso en la construcción de una aplicación web funcional utilizando el framework Django. A lo largo de 5 sprints, se implementó un sistema bancario simulado que integra autenticación de usuarios, gestión de cuentas, transferencias, recargas de saldo, edición de perfil y un dashboard financiero personalizado.
 
