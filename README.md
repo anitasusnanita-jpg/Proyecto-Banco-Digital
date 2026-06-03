@@ -77,28 +77,8 @@ En la actualidad, los sistemas bancarios en línea son una necesidad fundamental
  1.5 Estructura del proyecto
 
 
-Banco Digital/
-├── banco/
-│   ├── settings.py
-│   └── urls.py
-├── core/
-│   ├── models.py
-│   ├── views.py
-│   ├── admin.py
-│   ├── forms.py
-│   ├── urls.py
-│   └── templates/core/
-│       ├── base.html
-│       ├── inicio.html
-│       ├── registro.html
-│       ├── iniciar_sesion.html
-│       ├── panel.html
-│       ├── crear_cuenta.html
-│       ├── transferencia.html
-│       ├── editar_perfil.html
-│       └── recargar.html
-├── media/
-└── db.sqlite3
+<img width="304" height="570" alt="image" src="https://github.com/user-attachments/assets/d740e480-6ed7-4e19-ace8-2acee6961400" />
+
 
 
  1.6 Relaciones de base de datos implementadas
@@ -730,7 +710,7 @@ Crear transacciones manualmente seleccionando tipo (depósito/retiro/transferenc
 <img width="745" height="399" alt="image" src="https://github.com/user-attachments/assets/7fedfc2a-21f7-439f-8de1-65802aa33e32" />
 <img width="743" height="404" alt="image" src="https://github.com/user-attachments/assets/564e9571-d647-4dfc-bb74-d9e64f4f9011" />
 <img width="756" height="450" alt="image" src="https://github.com/user-attachments/assets/e206e56b-4638-4564-8acc-f4e789df84ae" />
-Aplicación:
+<br>Aplicación:
 Registrarse como nuevo usuario en /registro/ con nombre, email, teléfono, foto de perfil y contraseña
 Crear nueva cuenta bancaria en /cuenta/crear/ con número de cuenta y selección de tipos (Ahorro, Corriente, Nómina, Inversión)
 <img width="743" height="411" alt="image" src="https://github.com/user-attachments/assets/5a9818f0-d0e3-4e97-9ba4-2e92aee37674" />
@@ -747,8 +727,8 @@ Buscar por número de cuenta, nombre de usuario, email o descripción
 <img width="758" height="349" alt="image" src="https://github.com/user-attachments/assets/01d6c4e6-9889-49fb-ab23-72496a40e97f" />
 <img width="745" height="423" alt="image" src="https://github.com/user-attachments/assets/39544312-4577-4f2e-873b-b324a81037fa" />
 <img width="722" height="513" alt="image" src="https://github.com/user-attachments/assets/459450f7-3ea5-4625-9c59-64a3df8da8bc" />
-<img width="737" height="386" alt="image" src="https://github.com/user-attachments/assets/9ec504ad-e933-4aff-965a-52701c299c38" />
-Aplicación:
+<img width="737" height="386" alt="image" src="https://github.com/user-attachments/assets/9ec504ad-e933-4aff-965a-52701c299c38" />```
+<br>Aplicación:
 Ver listado público de cuentas en / con número, saldo, titular y tipos, más búsqueda, filtros y paginación
 Ver dashboard personal en /panel/ con credencial bancaria (foto, nombre, email, teléfono, ID, fecha registro), saldo total de todas sus cuentas, listado de sus cuentas (número, tipos, saldo, estado) y últimos 5 movimientos (fecha, tipo, descripción)
 <img width="749" height="403" alt="image" src="https://github.com/user-attachments/assets/eb69eedf-65bf-45de-a91b-7d38d642c246" />
@@ -762,7 +742,7 @@ Editar cuentas: cambiar número de cuenta, propietario, tipos de cuenta, saldo y
 Editar transacciones: modificar tipo, usuario y descripción
 Editar detalles: cambiar cuenta y monto de una transacción
 <img width="673" height="224" alt="image" src="https://github.com/user-attachments/assets/166f5774-0cad-417f-87f0-814914a17e71" />
-Aplicacion:
+<br>Aplicacion:
 Editar su perfil en /perfil/editar/ para cambiar nombre de usuario, email, teléfono, dirección y foto de perfil
 Recargar saldo en /recargar/<id_cuenta>/ ingresando un monto para aumentar el saldo de una cuenta específica
 Realizar transferencias en /transferencia/ seleccionando cuenta origen, escribiendo cuenta destino y monto, con validaciones de saldo suficiente y cuenta existente
