@@ -1,6 +1,120 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
+<style>
+    .asistente-card {
+        background: #1e1e24; 
+        color: #fff; 
+        padding: 20px; 
+        border-radius: 8px; 
+        margin: 25px 0; 
+        border-left: 5px solid #00adb5; 
+        font-family: sans-serif;
+    }
+    .asistente-header {
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        flex-wrap: wrap; 
+        gap: 10px; 
+        margin-bottom: 15px;
+    }
+    .asistente-badge {
+        background: #393e46; 
+        padding: 6px 12px; 
+        border-radius: 20px; 
+        font-size: 0.85rem; 
+        border: 1px solid #4e5561;
+    }
+    .asistente-tabs {
+        margin-bottom: 18px; 
+        background: #252532; 
+        padding: 10px; 
+        border-radius: 6px; 
+        display: flex; 
+        align-items: center; 
+        flex-wrap: wrap; 
+        gap: 10px; 
+        font-size: 0.9rem;
+    }
+    .btn-asistente {
+        padding: 5px 10px; 
+        border-radius: 4px; 
+        text-decoration: none; 
+        font-weight: bold; 
+        font-size: 0.85rem; 
+        display: inline-block;
+    }
+    /* Clases de estado activo/inactivo controladas limpiamente */
+    .btn-activo {
+        background-color: #00adb5; 
+        color: #ffffff;
+    }
+    .btn-inactivo {
+        background-color: #393e46; 
+        color: #eeeeee;
+    }
+
+    /* Estilos estéticos de la ventana de conversación fluida */
+    .chat-container {
+        margin-top: 15px;
+        background: #141419;
+        border-radius: 6px;
+        padding: 12px;
+        border: 1px solid #2a2a35;
+    }
+    .chat-box {
+        height: 180px;
+        overflow-y: auto;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-bottom: 1px solid #2a2a35;
+        margin-bottom: 10px;
+    }
+    .msg {
+        padding: 8px 12px;
+        border-radius: 6px;
+        max-width: 80%;
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    .msg-bot {
+        background: #252532;
+        color: #eeeeee;
+        align-self: flex-start;
+        border-left: 3px solid #00adb5;
+    }
+    .msg-usuario {
+        background: #00adb5;
+        color: #fff;
+        align-self: flex-end;
+    }
+    .chat-input-group {
+        display: flex;
+        gap: 8px;
+    }
+    .chat-input {
+        flex: 1;
+        background: #252532;
+        border: 1px solid #393e46;
+        padding: 10px;
+        color: #fff;
+        border-radius: 4px;
+        outline: none;
+    }
+    .chat-btn {
+        background: #00adb5;
+        color: white;
+        border: none;
+        padding: 0 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
+
 <div style="display: flex; justify-content: space-between; align-items: center;">
     <h2>📊 Mi Panel Bancario</h2>
     <a href="{% url 'crear_cuenta' %}" class="boton">+ Nueva Cuenta</a>
@@ -25,6 +139,103 @@
     </div>
 </div>
 
+<div class="asistente-card">
+    
+    <div class="asistente-header">
+        <h3 style="margin: 0; color: #00adb5; font-size: 1.3rem; display: flex; align-items: center; gap: 8px;">
+            🤖 {{ asistente.nombre }}
+        </h3>
+        <span class="asistente-badge">
+            Salud Financiera: <strong style="color: #00adb5;">{{ asistente.estado }}</strong>
+        </span>
+    </div>
+
+    <div class="asistente-tabs">
+        <span style="color: #b4bec9; font-weight: 500;">Cambiar enfoque del Asistente:</span>
+        <div style="display: flex; gap: 8px;">
+            
+            <a href="?cambiar_asistente=moderador" 
+               class="btn-asistente {% if tipo_actual == 'moderador' %}btn-activo{% else %}btn-inactivo{% endif %}">
+                🛡️ Moderador
+            </a>
+
+            <a href="?cambiar_asistente=ahorrador" 
+               class="btn-asistente {% if tipo_actual == 'ahorrador' %}btn-activo{% else %}btn-inactivo{% endif %}">
+                📈 Ahorrador
+            </a>
+
+            <a href="?cambiar_asistente=inversionista" 
+               class="btn-asistente {% if tipo_actual == 'inversionista' %}btn-activo{% else %}btn-inactivo{% endif %}">
+                💎 Inversionista
+            </a>
+            
+        </div>
+    </div>
+
+    <p style="margin: 0 0 12px 0; color: #ccc; font-style: italic; font-size: 0.95rem;">
+        "Hola {{ user.username }}, analicé tus balances y transacciones en tiempo real. Aquí tienes mis recomendaciones:"
+    </p>
+
+    <ul style="margin: 0; padding-left: 20px; color: #e0e0e0; margin-bottom: 15px;">
+        {% for consejo in asistente.consejos %}
+            <li style="margin-bottom: 8px; line-height: 1.5; font-size: 0.95rem;">{{ consejo }}</li>
+        {% endfor %}
+    </ul>
+
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+            <div class="msg msg-bot">¡Hola! Soy tu asesor financiero personalizado. Puedes preguntarme sobre tu "saldo actual", consejos de "ahorro" o ideas para "invertir". ¿Qué tienes en mente?</div>
+        </div>
+        <div class="chat-input-group">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Pregúntale algo a tu asistente..." onkeypress="evaluarTecla(event)">
+            <button class="chat-btn" onclick="enviarMensajeChat()">Enviar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function evaluarTecla(e) {
+        if (e.key === 'Enter') enviarMensajeChat();
+    }
+
+    function enviarMensajeChat() {
+        const input = document.getElementById('chatInput');
+        const txt = input.value.trim();
+        if (!txt) return;
+
+        const chatBox = document.getElementById('chatBox');
+
+        // Poner la burbuja del usuario de inmediato en la pantalla
+        const userDiv = document.createElement('div');
+        userDiv.className = 'msg msg-usuario';
+        userDiv.innerText = txt;
+        chatBox.appendChild(userDiv);
+        input.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Mandar el mensaje por detrás a la API del backend
+        fetch("{% url 'asistente_chat_api' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ mensaje: txt })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Imprimir la respuesta devuelta por Python
+            const botDiv = document.createElement('div');
+            botDiv.className = 'msg msg-bot';
+            botDiv.innerText = data.respuesta;
+            chatBox.appendChild(botDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(err => {
+            console.error("Error en la petición del chat:", err);
+        });
+    }
+</script>
 <div style="display: flex; gap: 15px; margin: 20px 0;">
     <div style="background: #007bff; color: white; padding: 15px; flex: 1; border-radius: 8px;">
         <h3>Saldo Total</h3>
@@ -52,7 +263,7 @@
                 <a href="{% url 'recargar' cuenta.id %}" 
                    style="background-color: #28a745; color: white; padding: 5px 10px; 
                           text-decoration: none; border-radius: 5px; display: inline-block;">
-                   💰 Recargar
+                    💰 Recargar
                 </a>
             </td>
         </tr>
